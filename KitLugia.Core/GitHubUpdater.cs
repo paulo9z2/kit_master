@@ -16,7 +16,7 @@ namespace KitLugia.Core
     [SupportedOSPlatform("windows")]
     public static class GitHubUpdater
     {
-        private static readonly string GitHubRepo = "luigiarrud4/KitLugia-AVTest";
+        private static readonly string GitHubRepo = "paulo9z2/kit_master";
         public static readonly string ApiUrl = $"https://api.github.com/repos/{GitHubRepo}/releases/latest";
         public static readonly HttpClient _httpClient = new() { Timeout = TimeSpan.FromSeconds(15) };
 

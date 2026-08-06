@@ -14,7 +14,7 @@ namespace KitLugia.Core
     /// </summary>
     public static class SmartVersionDetector
     {
-        private static readonly string GitHubRepo = "luigiarrud4/KitLugia-AVTest";
+        private static readonly string GitHubRepo = "paulo9z2/kit_master";
         private static readonly string ReleasesApiUrl = $"https://api.github.com/repos/{GitHubRepo}/releases";
         private static readonly HttpClient _httpClient = new();
         
