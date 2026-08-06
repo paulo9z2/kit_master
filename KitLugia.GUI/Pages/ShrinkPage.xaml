@@ -1,0 +1,186 @@
+﻿<Page x:Class="KitLugia.GUI.Pages.ShrinkPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignHeight="600" d:DesignWidth="900"
+      Title="rEFInd Boot Manager â€” KitLugia"
+      TextElement.FontFamily="Segoe UI Variable Display, Segoe UI, Segoe UI Emoji, Segoe UI Symbol, Arial"
+      Background="{DynamicResource WindowBackground}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,15">
+            <TextBlock Text="&#x2B55; rEFInd Boot Manager" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource AccentColor}"/>
+            <TextBlock Text="Gerenciador de boot UEFI â€” auto-detecÃ§Ã£o de sistemas, temas, Secure Boot" FontSize="14" Foreground="{StaticResource TextMuted}" Margin="0,5,0,0"/>
+        </StackPanel>
+
+        <!-- Main Content -->
+        <Border Grid.Row="1" Background="{DynamicResource CardBackground}" CornerRadius="10" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" Style="{StaticResource CardStyle}" Padding="25">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- LEFT: Info & Actions -->
+                <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+
+                        <!-- Status Card -->
+                        <Border x:Name="BdrStatus" Background="#1A2A1A" CornerRadius="8" Padding="15" Margin="0,0,0,15" BorderBrush="#4CAF50" BorderThickness="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="TxtStatusIcon" Text="&#x2705;" FontSize="32" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock x:Name="TxtStatusTitle" Text="rEFInd nao detectado" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock x:Name="TxtStatusDetail" Text="Clique em Instalar para adicionar ao ESP" FontSize="11" Foreground="#AAA" Margin="0,2,0,0"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,12,0,0">
+                                    <Button x:Name="BtnInstallRefind" Content="&#x2B55; INSTALAR rEFInd" Height="40" FontSize="13" FontWeight="Bold"
+                                            Style="{StaticResource GoldButtonStyle}" Margin="0,0,10,0" Click="BtnInstallRefind_Click" Width="180"/>
+                                    <Button x:Name="BtnRemoveRefind" Content="&#x274C; DESINSTALAR" Height="40" FontSize="13" FontWeight="Bold"
+                                            Style="{StaticResource DeleteButtonStyle}" Click="BtnRemoveRefind_Click" Width="150"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- Features Card -->
+                        <Border Background="#1A1A2A" CornerRadius="8" Padding="15" Margin="0,0,0,12" BorderBrush="#5555AA" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="&#x1F4A1; Sobre o rEFInd" FontSize="14" FontWeight="Bold" Foreground="White" Margin="0,0,0,8"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="11" Foreground="#B0B0B0" Margin="0,0,0,8">
+rEFInd v0.14.2 â€” fork do rEFIt por Roderick W. Smith. Substitui o Windows Boot Manager no ESP e oferece um menu grÃ¡fico para escolher o SO na inicializacao.
+                                </TextBlock>
+                                <Separator Background="#333" Margin="0,0,0,8"/>
+                                <BulletDecorator Margin="0,0,0,4">
+                                    <BulletDecorator.Bullet>
+                                        <TextBlock Text="&#x2022;" Foreground="{DynamicResource AccentColor}" FontSize="12" Margin="0,0,4,0"/>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Text="Auto-detecÃ§Ã£o de EFI boot loaders em discos internos, externos e rede" FontSize="10" Foreground="#CCC" TextWrapping="Wrap"/>
+                                </BulletDecorator>
+                                <BulletDecorator Margin="0,0,0,4">
+                                    <BulletDecorator.Bullet>
+                                        <TextBlock Text="&#x2022;" Foreground="{DynamicResource AccentColor}" FontSize="12" Margin="0,0,4,0"/>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Text="Suporte a Secure Boot via Shim / MOK" FontSize="10" Foreground="#CCC" TextWrapping="Wrap"/>
+                                </BulletDecorator>
+                                <BulletDecorator Margin="0,0,0,4">
+                                    <BulletDecorator.Bullet>
+                                        <TextBlock Text="&#x2022;" Foreground="{DynamicResource AccentColor}" FontSize="12" Margin="0,0,4,0"/>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Text="Temas personalizados com icons PNG/JPEG/ICNS, banner e fontes escalaveis" FontSize="10" Foreground="#CCC" TextWrapping="Wrap"/>
+                                </BulletDecorator>
+                                <BulletDecorator Margin="0,0,0,4">
+                                    <BulletDecorator.Bullet>
+                                        <TextBlock Text="&#x2022;" Foreground="{DynamicResource AccentColor}" FontSize="12" Margin="0,0,4,0"/>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Text="Boot direto de kernels Linux com stub EFI + initramfs" FontSize="10" Foreground="#CCC" TextWrapping="Wrap"/>
+                                </BulletDecorator>
+                                <BulletDecorator Margin="0,0,0,4">
+                                    <BulletDecorator.Bullet>
+                                        <TextBlock Text="&#x2022;" Foreground="{DynamicResource AccentColor}" FontSize="12" Margin="0,0,4,0"/>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Text="Drivers EFI para ext4fs, Btrfs, NTFS, HFS+, ISO-9660" FontSize="10" Foreground="#CCC" TextWrapping="Wrap"/>
+                                </BulletDecorator>
+                                <BulletDecorator Margin="0,0,0,4">
+                                    <BulletDecorator.Bullet>
+                                        <TextBlock Text="&#x2022;" Foreground="{DynamicResource AccentColor}" FontSize="12" Margin="0,0,4,0"/>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Text="Boot de rede via iPXE (PXE/HTTP)" FontSize="10" Foreground="#CCC" TextWrapping="Wrap"/>
+                                </BulletDecorator>
+                                <BulletDecorator>
+                                    <BulletDecorator.Bullet>
+                                        <TextBlock Text="&#x2022;" Foreground="{DynamicResource AccentColor}" FontSize="12" Margin="0,0,4,0"/>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Text="Timeout configuravel, entrada padrao, protetor de tela" FontSize="10" Foreground="#CCC" TextWrapping="Wrap"/>
+                                </BulletDecorator>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- How it works -->
+                        <Border Background="#1A2A1A" CornerRadius="8" Padding="15" Margin="0,0,0,12" BorderBrush="#4CAF50" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="&#x1F4CB; Como funciona" FontSize="14" FontWeight="Bold" Foreground="White" Margin="0,0,0,8"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="10" Foreground="#B0B0B0" Margin="0,0,0,6">
+1. INSTALAR: Substitui bootmgfw.efi no ESP pelo rEFInd.
+   O Windows Boot Manager original Ã© renomeado para bootmgfw.efi.original.
+
+2. BOOT: Na inicializacao, o rEFInd mostra um menu com todos
+   os sistemas detectados automaticamente.
+
+3. DESINSTALAR: Restaura o bootmgfw.efi original.
+   Remove os arquivos do rEFInd do ESP.
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Tips -->
+                        <Border Background="#2A2A1A" CornerRadius="8" Padding="15" BorderBrush="#AAAA55" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="&#x26A0; Dicas" FontSize="14" FontWeight="Bold" Foreground="White" Margin="0,0,0,8"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="10" Foreground="#B0B0B0">
+- Nao desligue o PC durante a instalacao/remocao do rEFInd
+- Se BitLocker estiver ativo, pode ser necessario pausa-lo antes
+- Para personalizar, edite refind.conf no ESP (EFI/refind/)
+- Temas podem ser adicionados em EFI/refind/themes/
+- Consulte https://www.rodsbooks.com/refind/ para documentacao completa
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- RIGHT: Log -->
+                <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="8" BorderBrush="#333" BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="&#x1F4DD; LOG" FontSize="11" Foreground="#AAA" Margin="10,8,10,5"/>
+                        <ScrollViewer Grid.Row="1" Margin="5" x:Name="LogScroll">
+                            <TextBox x:Name="TxtLog" IsReadOnly="True" FontFamily="Consolas" FontSize="10"
+                                     Foreground="#0F0" Background="#111" BorderThickness="0"
+                                     TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                     AcceptsReturn="True"/>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Bottom overlay with progress -->
+        <Grid x:Name="OverlayBusy" Grid.RowSpan="2" Background="#CC000000" Visibility="Collapsed">
+            <Border Background="#1A1A1A" CornerRadius="10" BorderBrush="#333" BorderThickness="1"
+                    Width="480" Padding="30" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel>
+                    <TextBlock x:Name="TxtProgressIcon" Text="&#x23F3;" FontSize="40" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="TxtProgressTitle" Text="Processando..." FontSize="18" FontWeight="SemiBold"
+                               Foreground="White" HorizontalAlignment="Center" Margin="0,10,0,2"/>
+                    <TextBlock x:Name="TxtProgressStep" Text="" FontSize="13" Foreground="#AAA"
+                               HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,15"/>
+                    <ProgressBar x:Name="ProgressBar" Height="8" IsIndeterminate="True"
+                                 Foreground="{DynamicResource AccentColor}" Background="#333" Margin="0,0,0,2"/>
+                    <Button x:Name="BtnCancelOp" Content="&#x274C; CANCELAR" Height="36" FontSize="12" FontWeight="Bold"
+                            Style="{StaticResource DeleteButtonStyle}" Margin="0,5,0,0"
+                            Click="BtnCancelOp_Click" HorizontalAlignment="Center" Width="160" Visibility="Collapsed"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

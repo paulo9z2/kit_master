@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="KitLugia.GUI.Pages.ThemePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Tema"
+      Background="Transparent">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30,30,30,30" MaxWidth="800">
+            <TextBlock Text="&#x1F3A8; Personalizar Aparência" FontSize="28" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,0,0,10"/>
+            <TextBlock Text="Escolha entre a nova estética moderna ou o clássico dourado original." Foreground="#AAAAAA" FontSize="13" Margin="0,0,0,30"/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- TEMA MODERNO -->
+                <Border Grid.Column="0" Style="{StaticResource CardStyle}" Padding="25" Background="#18FFFFFF" BorderBrush="#338B5CF6" CornerRadius="16">
+                    <StackPanel>
+                        <TextBlock Text="&#x2728; Moderno" FontSize="18" FontWeight="Bold" Foreground="#00D4AA" Margin="0,0,0,10"/>
+                        <TextBlock Text="Paleta: Ciano (#00D4AA), Roxo (#8B5CF6) e Coral (#FF6B6B). Cards glass, sombras suaves e tipografia limpa." FontSize="12" Foreground="#CCCCCC" Margin="0,0,0,20" TextWrapping="Wrap"/>
+                        <Button x:Name="BtnThemeModern" Content="Aplicar Tema Moderno" Click="BtnThemeModern_Click" Style="{StaticResource SecondaryButtonStyle}" Background="#20FFFFFF" Foreground="#00D4AA" BorderBrush="#00D4AA" Padding="14,6" FontWeight="Bold"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- TEMA ORIGINAL -->
+                <Border Grid.Column="2" Style="{StaticResource CardStyle}" Padding="25" Background="#18FFFFFF" BorderBrush="#33FFD700" CornerRadius="16">
+                    <StackPanel>
+                        <TextBlock Text="&#x1F3DB; Original Dourado" FontSize="18" FontWeight="Bold" Foreground="#FFD700" Margin="0,0,0,10"/>
+                        <TextBlock Text="Paleta: Dourado (#FFD700), preto e dourado escuro. Visual clássico inspirado no Gold Edition." FontSize="12" Foreground="#CCCCCC" Margin="0,0,0,20" TextWrapping="Wrap"/>
+                        <Button x:Name="BtnThemeGold" Content="Aplicar Tema Dourado" Click="BtnThemeGold_Click" Style="{StaticResource SecondaryButtonStyle}" Background="#20FFFFFF" Foreground="#FFD700" BorderBrush="#FFD700" Padding="14,6" FontWeight="Bold"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

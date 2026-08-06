@@ -1,0 +1,66 @@
+<unattend xmlns="urn:schemas-microsoft-com:unattend">
+  <settings pass="windowsPE"><component name="Microsoft-Windows-Setup" processorArchitecture="amd64" language="neutral"
+   xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   publicKeyToken="31bf3856ad364e35" versionScope="nonSxS">
+    <UserData>
+	<ProductKey>
+	<Key>TX9XD-98N7V-6WMQ6-BX7FG-H8Q99</Key>
+	<WillShowUI>OnError</WillShowUI>
+	</ProductKey>
+	</UserData>
+	
+    <ComplianceCheck><DisplayReport>Never</DisplayReport></ComplianceCheck>
+	<Diagnostics><OptIn>false</OptIn></Diagnostics>
+    <DynamicUpdate><Enable>false</Enable><WillShowUI>Never</WillShowUI></DynamicUpdate>
+	<EnableNetwork>false</EnableNetwork>
+    <RunSynchronous>
+      <RunSynchronousCommand wcm:action="add"><Order>1</Order>
+        <Path>reg add HKLM\SYSTEM\Setup\LabConfig /v BypassTPMCheck /d 1 /t reg_dword /f</Path></RunSynchronousCommand>
+      <RunSynchronousCommand wcm:action="add"><Order>2</Order>
+        <Path>reg add HKLM\SYSTEM\Setup\LabConfig /v BypassSecureBootCheck /d 1 /t reg_dword /f</Path></RunSynchronousCommand>
+      <RunSynchronousCommand wcm:action="add"><Order>3</Order>
+        <Path>reg add HKLM\SYSTEM\Setup\LabConfig /v BypassRAMCheck /d 1 /t reg_dword /f</Path></RunSynchronousCommand>
+      <RunSynchronousCommand wcm:action="add"><Order>4</Order>
+        <Path>reg add HKLM\SYSTEM\Setup\LabConfig /v BypassStorageCheck /d 1 /t reg_dword /f</Path></RunSynchronousCommand>
+      <RunSynchronousCommand wcm:action="add"><Order>5</Order>
+        <Path>reg add HKLM\SYSTEM\Setup\LabConfig /v BypassCPUCheck /d 1 /t reg_dword /f</Path></RunSynchronousCommand>
+      <RunSynchronousCommand wcm:action="add"><Order>6</Order>
+        <Path>reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE /v BypassNRO /t reg_dword /d 1 /f</Path></RunSynchronousCommand>
+      <RunSynchronousCommand wcm:action="add"><Order>7</Order>
+        <Path>cmd /q /c "FOR %i IN (C D E F G H I J K L N M O P Q R S T U V W X Y Z) DO IF EXIST %i:\_ISO\E2B\FIRADISK\LOADISONP.CMD cmd /k %i:\_ISO\E2B\FIRADISK\LOADISONP.cmd"</Path></RunSynchronousCommand>
+    </RunSynchronous>
+
+  </component></settings>
+  
+  <settings pass="oobeSystem"><component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" language="neutral" 
+   xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   publicKeyToken="31bf3856ad364e35" versionScope="nonSxS">
+    <UserAccounts>
+      <LocalAccounts>
+        <LocalAccount wcm:action="add">
+          <Password><Value><![CDATA[]]></Value><PlainText>true</PlainText></Password>
+          <Group>Administrators</Group>
+          <DisplayName>Usuario</DisplayName>
+          <Name>Usuario</Name>
+        </LocalAccount>
+      </LocalAccounts>
+    </UserAccounts>
+    <OOBE>
+      <HideEULAPage>true</HideEULAPage>
+      <HideOEMRegistrationScreen>true</HideOEMRegistrationScreen>
+      <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+      <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+      <SkipUserOOBE>true</SkipUserOOBE>
+      <SkipMachineOOBE>true</SkipMachineOOBE>
+      <ProtectYourPC>1</ProtectYourPC>
+    </OOBE>  
+    <FirstLogonCommands>
+      <SynchronousCommand wcm:action="add"><Order>1</Order>
+        <CommandLine>reg add "HKCU\Control Panel\UnsupportedHardwareNotificationCache" /v SV1 /d 0 /t reg_dword /f</CommandLine>
+      </SynchronousCommand><SynchronousCommand wcm:action="add"><Order>2</Order>
+        <CommandLine>reg add "HKCU\Control Panel\UnsupportedHardwareNotificationCache" /v SV2 /d 0 /t reg_dword /f</CommandLine>
+      </SynchronousCommand>
+    </FirstLogonCommands>
+  </component></settings>
+  
+</unattend>

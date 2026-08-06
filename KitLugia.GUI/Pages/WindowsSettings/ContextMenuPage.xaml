@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="KitLugia.GUI.Pages.WindowsSettings.ContextMenuPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="clr-namespace:KitLugia.GUI.Controls"
+      Title="Menu de Contexto"
+      TextElement.FontFamily="Segoe UI Variable Display, Segoe UI, Segoe UI Emoji, Segoe UI Symbol, Arial">
+
+    <Page.Resources>
+        <SolidColorBrush x:Key="MenuHoverBrush" Color="#3A3A4A"/>
+        <SolidColorBrush x:Key="MenuItemText" Color="#F0F0F0"/>
+        <SolidColorBrush x:Key="MenuItemMuted" Color="#888899"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="40,30,40,50" MaxWidth="960" HorizontalAlignment="Left">
+
+            <!-- ================================================================ -->
+            <!-- TITULO -->
+            <!-- ================================================================ -->
+            <TextBlock Text="&#x1F4CB; Menu de Contexto do Windows" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,8" Foreground="White"/>
+            <TextBlock Text="Gerencie todas as entradas do menu de clique direito do Explorer. Adicione, remova ou filtre itens nativos do Windows e de terceiros." Foreground="{DynamicResource TextDescription}" Margin="0,0,0,25" TextWrapping="Wrap"/>
+
+            <!-- ================================================================ -->
+            <!-- BARRA DE BACKUP -->
+            <!-- ================================================================ -->
+            <Border CornerRadius="6" Background="#14281A" BorderBrush="#3A6644" BorderThickness="1" Margin="0,0,0,20" Padding="12,8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="&#x1F4BE;" FontSize="16" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="BackupStatus" Grid.Column="1" Text="Verificando backup..." FontSize="11" Foreground="#77AA88" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                    <Button x:Name="BtnRestoreBackup" Grid.Column="2" Content="&#x21A9; Restaurar" FontSize="11" Padding="10,4" Margin="0,0,6,0" Cursor="Hand" Click="BtnRestoreBackup_Click" Visibility="Collapsed">
+                        <Button.Background><SolidColorBrush Color="#336622"/></Button.Background>
+                        <Button.Foreground><SolidColorBrush Color="White"/></Button.Foreground>
+                    </Button>
+                    <Button x:Name="BtnBackupNow" Grid.Column="3" Content="&#x1F504; Backup" FontSize="11" Padding="10,4" Cursor="Hand" Click="BtnBackupNow_Click">
+                        <Button.Background><SolidColorBrush Color="#224488"/></Button.Background>
+                        <Button.Foreground><SolidColorBrush Color="White"/></Button.Foreground>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- ================================================================ -->
+            <!-- QUICK-ADD: Adicionar entradas predefinidas (TOPO) -->
+            <!-- ================================================================ -->
+            <Grid Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="&#x2795; OpÃ§Ãµes para Adicionar ao Menu" FontSize="18" FontWeight="SemiBold" Foreground="White"/>
+                <Border Grid.Column="1" Padding="8,2" CornerRadius="10" Background="#224488">
+                    <TextBlock x:Name="QuickAddActiveCount" Text="0 ativas" Foreground="#88CCFF" FontWeight="SemiBold" FontSize="11"/>
+                </Border>
+            </Grid>
+            <TextBlock Text="Ative as opÃ§Ãµes abaixo para adicionÃ¡-las ao menu de contexto. Desative para removÃª-las." Foreground="{DynamicResource TextDescription}" FontSize="12" Margin="0,0,0,15"/>
+
+            <UniformGrid Rows="0" Columns="3" x:Name="QuickAddGrid" Margin="0,0,0,20"/>
+
+            <!-- ================================================================ -->
+            <!-- SEPARADOR -->
+            <!-- ================================================================ -->
+            <Separator Background="#22FFD700" Opacity="0.15" Margin="0,0,0,20"/>
+
+            <!-- ================================================================ -->
+            <!-- TABELA DE TODAS AS ENTRADAS (NATIVAS + USUÃRIO) -->
+            <!-- ================================================================ -->
+            <Grid Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="&#x1F4CA; Todas as Entradas" FontSize="18" FontWeight="SemiBold" Foreground="White" VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center">
+                    <Border Background="#15FFFFFF" CornerRadius="6" Height="32" BorderBrush="#404040" BorderThickness="1" Width="260">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="&#x1F50D;" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#888" FontSize="13"/>
+                            <TextBlock Text="Filtrar entradas..." Foreground="#606060" VerticalAlignment="Center"
+                                       IsHitTestVisible="False" FontStyle="Italic" FontSize="13" Grid.Column="1">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=TxtSearch}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <TextBox x:Name="TxtSearch" Background="Transparent" BorderThickness="0"
+                                     Foreground="White" VerticalAlignment="Center" FontSize="13"
+                                     Padding="0,0,8,0" CaretBrush="{DynamicResource AccentColor}"
+                                     TextChanged="TxtSearch_TextChanged" Grid.Column="1"/>
+                        </Grid>
+                    </Border>
+
+                    <TextBlock x:Name="TxtEntryCount" Text="0 entradas" Foreground="#666" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="11"/>
+                    <Button Content="Recarregar" Click="BtnRefreshTable_Click" Margin="10,0,0,0" Style="{StaticResource SecondaryButtonStyle}" Height="30" FontSize="12"/>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock Text="Entradas marcadas como &#x201C;Sistema&#x201D; sÃ£o nativas do Windows ou de aplicativos instalados (HKLM). Entradas &#x201C;UsuÃ¡rio&#x201D; podem ser removidas com seguranÃ§a." Foreground="{DynamicResource TextDescription}" FontSize="12" Margin="0,0,0,12"/>
+
+            <!-- DataGrid -->
+            <Border BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="6" Background="#111" Margin="0,0,0,20">
+                <DataGrid x:Name="GridEntries" SelectionMode="Single" AutoGenerateColumns="False" HeadersVisibility="Column" IsReadOnly="True"
+                          BorderThickness="0" RowHeaderWidth="0" Background="Transparent"
+                          GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#222">
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#1A1A1A"/>
+                            <Setter Property="Foreground" Value="#AAA"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="Padding" Value="8,6"/>
+                            <Setter Property="BorderBrush" Value="#333"/>
+                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                        </Style>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="#CCC"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Padding" Value="8,4"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#2A2A35"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="MinHeight" Value="32"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#252530"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
+
+                    <DataGrid.Columns>
+                        <!-- Nome -->
+                        <DataGridTextColumn Header="Nome" Binding="{Binding DisplayName}" Width="200" SortMemberPath="DisplayName">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="ToolTip" Value="{Binding DisplayName}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Comando -->
+                        <DataGridTextColumn Header="Comando" Binding="{Binding CommandText}" Width="*" SortMemberPath="CommandText">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="#777"/>
+                                    <Setter Property="FontStyle" Value="Italic"/>
+                                    <Setter Property="ToolTip" Value="{Binding CommandText}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Tipo -->
+                        <DataGridTextColumn Header="Tipo" Binding="{Binding TypeLabel}" Width="70" SortMemberPath="TypeLabel">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="#999"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Origem (Sistema / UsuÃ¡rio) -->
+                        <DataGridTemplateColumn Header="Origem" Width="100" SortMemberPath="OriginLabel">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border CornerRadius="3" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                            BorderThickness="1" Height="22">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="#20FFD700"/>
+                                                <Setter Property="BorderBrush" Value="#FFD700"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSystem}" Value="False">
+                                                        <Setter Property="Background" Value="#204CAF50"/>
+                                                        <Setter Property="BorderBrush" Value="#4CAF50"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding OriginLabel}" FontSize="10" FontWeight="SemiBold" Foreground="White" VerticalAlignment="Center"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Caminho do Registro -->
+                        <DataGridTextColumn Header="Caminho do Registro" Binding="{Binding LocationPath}" Width="200" SortMemberPath="LocationPath">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="#666"/>
+                                    <Setter Property="FontSize" Value="11"/>
+                                    <Setter Property="ToolTip" Value="{Binding LocationPath}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- AÃ§Ã£o (Remover) -->
+                        <DataGridTemplateColumn Header="AÃ§Ã£o" Width="70">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="&#x2716;" Width="28" Height="24" FontSize="10"
+                                            Padding="0" Cursor="Hand"
+                                            Visibility="{Binding CanRemove, Converter={StaticResource BoolToVis}}"
+                                            Tag="{Binding Entry}"
+                                            Click="BtnGridRemove_Click"
+                                            Background="#442020" Foreground="#DD5050"
+                                            BorderBrush="#662D2D" BorderThickness="1"
+                                            ToolTip="Remover entrada"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+
+            <!-- ================================================================ -->
+            <!-- SEPARADOR -->
+            <!-- ================================================================ -->
+            <Separator Background="#22FFD700" Opacity="0.15" Margin="0,0,0,20"/>
+
+            <!-- ================================================================ -->
+            <!-- PREVIEW: Seletor de Contexto + Menu Simulado -->
+            <!-- ================================================================ -->
+            <TextBlock Text="&#x1F4CB; Preview do Menu por Contexto" FontSize="18" FontWeight="SemiBold" Foreground="White" Margin="0,0,0,8"/>
+            <TextBlock Text="Selecione onde clicaria com o botÃ£o direito e veja o menu simulado 1:1." Foreground="{DynamicResource TextDescription}" FontSize="12" Margin="0,0,0,15"/>
+
+            <!-- Context Chips -->
+            <WrapPanel x:Name="ContextChips" Orientation="Horizontal" Margin="0,0,0,15"/>
+
+            <!-- Empty hint -->
+            <TextBlock x:Name="EmptyHint" Text="Nenhuma entrada personalizada encontrada para este contexto." Foreground="{DynamicResource TextMuted}" FontSize="13" FontStyle="Italic" Margin="0,0,0,20" Visibility="Collapsed"/>
+
+            <!-- Simulated Menu -->
+            <Border x:Name="SimulatedMenu" CornerRadius="8" Background="#2B2B30" BorderBrush="#404048" BorderThickness="1" Padding="4" HorizontalAlignment="Left" MinWidth="280" MaxWidth="420" Visibility="Collapsed">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="20" ShadowDepth="4" Opacity="0.6"/>
+                </Border.Effect>
+                <ScrollViewer MaxHeight="480" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel x:Name="MenuPanel"/>
+                </ScrollViewer>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>
