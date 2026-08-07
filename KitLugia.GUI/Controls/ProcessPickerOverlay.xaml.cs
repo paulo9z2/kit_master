@@ -69,7 +69,7 @@ namespace KitLugia.GUI.Controls
                 _selectedEntry = null;
                 await RefreshAsync();
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
@@ -112,7 +112,7 @@ namespace KitLugia.GUI.Controls
 
                         long ramMB = proc.WorkingSet64 / (1024 * 1024);
                         string? exePath = null;
-                        try { exePath = proc.MainModule?.FileName; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { exePath = proc.MainModule?.FileName; } catch { }
 
                         if (grouped.TryGetValue(name, out var existing))
                         {
@@ -131,11 +131,11 @@ namespace KitLugia.GUI.Controls
                             };
                         }
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                     finally { proc.Dispose(); }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return grouped.Values
                 .OrderByDescending(e => e.TotalRamMB)
@@ -219,7 +219,7 @@ namespace KitLugia.GUI.Controls
                             Dispatcher.Invoke(() => img.Source = src);
                         }
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 });
             }
             iconBorder.Child = img;
@@ -517,7 +517,7 @@ namespace KitLugia.GUI.Controls
                         if (!string.IsNullOrEmpty(info.FileDescription))
                             return info.FileDescription;
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
                 // Capitaliza
                 return ProcessName.Length > 0

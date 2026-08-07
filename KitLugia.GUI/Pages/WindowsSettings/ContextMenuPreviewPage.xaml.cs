@@ -230,7 +230,7 @@ namespace KitLugia.GUI.Pages.WindowsSettings
                         RebuildMenu();
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
                 finally { _isLoading = false; }
             }
         }

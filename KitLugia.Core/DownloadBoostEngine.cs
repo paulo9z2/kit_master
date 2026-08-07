@@ -107,7 +107,8 @@ namespace KitLugia.Core
         {
             try
             {
-                using var proc = Process.GetProcessById((int)pid);
+                if (!ProcessHelper.TryGetProcessById((int)pid, out var proc)) return;
+                using var procRef = proc;
                 if (proc.HasExited) return;
 
                 var backup = new PerProcessBackup();
@@ -124,7 +125,7 @@ namespace KitLugia.Core
                             steps.Add($"CPU: AboveNormal (PID {pid})");
                         }
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
 
                 if (config.PerProcessPriority)
@@ -133,11 +134,11 @@ namespace KitLugia.Core
                     {
                         IntPtr h = proc.Handle;
                         backup.OriginalIoPriority = 2;
-                        try { backup.OriginalIoPriority = (int)GetProcessIoPriority(h); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { backup.OriginalIoPriority = (int)GetProcessIoPriority(h); } catch { }
                         SetProcessIoPriority(h, 3u);
                         steps.Add($"I/O: High (PID {pid})");
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
 
                 if (config.PerProcessPriority)
@@ -146,11 +147,11 @@ namespace KitLugia.Core
                     {
                         IntPtr h = proc.Handle;
                         backup.OriginalPagePriority = 5;
-                        try { backup.OriginalPagePriority = (int)GetProcessPagePriority(h); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { backup.OriginalPagePriority = (int)GetProcessPagePriority(h); } catch { }
                         SetProcessPagePriority(h, 5);
                         steps.Add($"Page: High (PID {pid})");
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
 
                 if (config.DisableEcoQoS)
@@ -171,12 +172,12 @@ namespace KitLugia.Core
                         backup.EcoQoSWasEnabled = false;
                         steps.Add($"EcoQoS: desligado (PID {pid})");
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
 
                 _processBackup[pid] = backup;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         private static void ApplySystemTcp(DownloadBoostConfig config, List<string> steps)
@@ -197,7 +198,7 @@ namespace KitLugia.Core
                         steps.Add("TCP: CTCP ativado");
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             if (config.TcpOptimization)
@@ -207,7 +208,7 @@ namespace KitLugia.Core
                     SystemUtils.RunExternalProcess("netsh", "int tcp set global autotuninglevel=normal", true);
                     steps.Add("TCP: auto-tuning=normal");
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             if (config.RssEnable)
@@ -220,7 +221,7 @@ namespace KitLugia.Core
                     key?.SetValue("EnableRSS", 1, RegistryValueKind.DWord);
                     steps.Add("RSS: habilitado");
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             if (config.RscEnable)
@@ -230,7 +231,7 @@ namespace KitLugia.Core
                     SystemUtils.RunExternalProcess("netsh", "int tcp set global rsc=enabled", true);
                     steps.Add("RSC: habilitado");
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             if (config.NetworkThrottling)
@@ -248,7 +249,7 @@ namespace KitLugia.Core
                         steps.Add("NetworkThrottling: desabilitado");
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             if (config.MaxUserPort > 0)
@@ -266,7 +267,7 @@ namespace KitLugia.Core
                         steps.Add($"MaxUserPort={config.MaxUserPort}, TcpTimedWaitDelay={config.TcpTimedWaitDelay}");
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             if (config.NagleDisable)
@@ -279,7 +280,7 @@ namespace KitLugia.Core
                     SystemUtils.RunExternalProcess("ipconfig", "/flushdns", true);
                     steps.Add("DNS: cache limpo");
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
         }
 
@@ -301,7 +302,7 @@ namespace KitLugia.Core
                     SystemUtils.RunExternalProcess("netsh", $"int tcp set global autotuninglevel={level}", true);
                     steps.Add($"TCP: auto-tuning={level} (modo conservador)");
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             if (config.RscEnable)
@@ -311,7 +312,7 @@ namespace KitLugia.Core
                     SystemUtils.RunExternalProcess("netsh", "int tcp set global rsc=disabled", true);
                     steps.Add("RSC: desabilitado (modo conservador)");
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
         }
 
@@ -339,11 +340,11 @@ namespace KitLugia.Core
                             iface.SetValue("TcpDelAckTicks", 0, RegistryValueKind.DWord);
                         }
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
                 steps.Add("Nagle: desabilitado");
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         public static void Revert(uint targetPid = 0)
@@ -375,22 +376,27 @@ namespace KitLugia.Core
 
             try
             {
-                using var proc = Process.GetProcessById((int)pid);
+                if (!ProcessHelper.TryGetProcessById((int)pid, out var proc))
+                {
+                    _processBackup.Remove(pid);
+                    return;
+                }
+                using var procRef = proc;
                 if (proc.HasExited) { _processBackup.Remove(pid); return; }
 
                 if (backup.OriginalCpuPriority.HasValue)
                 {
-                    try { proc.PriorityClass = backup.OriginalCpuPriority.Value; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    try { proc.PriorityClass = backup.OriginalCpuPriority.Value; } catch { }
                 }
 
                 if (backup.OriginalIoPriority.HasValue)
                 {
-                    try { SetProcessIoPriority(proc.Handle, (uint)backup.OriginalIoPriority.Value); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    try { SetProcessIoPriority(proc.Handle, (uint)backup.OriginalIoPriority.Value); } catch { }
                 }
 
                 if (backup.OriginalPagePriority.HasValue)
                 {
-                    try { SetProcessPagePriority(proc.Handle, (uint)backup.OriginalPagePriority.Value); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    try { SetProcessPagePriority(proc.Handle, (uint)backup.OriginalPagePriority.Value); } catch { }
                 }
 
                 if (!backup.EcoQoSWasEnabled)
@@ -409,12 +415,12 @@ namespace KitLugia.Core
                         SetProcessInformation(proc.Handle, ProcessPowerThrottling, ptr, (uint)sz);
                         Marshal.FreeHGlobal(ptr);
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
 
                 steps.Add($"Per-process revertido (PID {pid})");
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             _processBackup.Remove(pid);
         }
 
@@ -429,7 +435,7 @@ namespace KitLugia.Core
                 SystemUtils.RunExternalProcess("netsh", "int tcp set heuristics enabled", true);
                 steps.Add("TCP: defaults restaurados");
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             try
             {
@@ -472,12 +478,12 @@ namespace KitLugia.Core
                             iface.DeleteValue("TcpDelAckTicks", false);
                         }
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
 
                 steps.Add("Registry: restaurado");
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             _registryBackup.Clear();
         }
 

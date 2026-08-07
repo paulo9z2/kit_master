@@ -292,7 +292,7 @@ public sealed class NetworkExposureManager : IDisposable
                     return (true, externalPort);
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         
         return (false, 0);
     }
@@ -318,7 +318,7 @@ public sealed class NetworkExposureManager : IDisposable
                     return (true, actualPort);
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         
         return (false, 0);
     }
@@ -375,7 +375,7 @@ public sealed class NetworkExposureManager : IDisposable
                 mapping.IsActive = false;
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
     }
 
     // ------------------------------------------------------------
@@ -447,7 +447,7 @@ public sealed class NetworkExposureManager : IDisposable
             var completedTask = await Task.WhenAny(connectTask, Task.Delay(timeoutMs));
             return completedTask == connectTask && tcpClient.Connected;
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+        catch { return false; }
     }
 
     public IReadOnlyList<PortMapping> GetActiveMappings() => _activeMappings.AsReadOnly();
@@ -495,7 +495,7 @@ public sealed class NetworkExposureManager : IDisposable
     // ------------------------------------------------------------
     public void Dispose()
     {
-        try { _ = CloseAllPortsAsync(); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        try { _ = CloseAllPortsAsync(); } catch { }
         _discoveryCts?.Cancel();
         _discoveryCts?.Dispose();
     }
@@ -556,7 +556,7 @@ public class UPnPDiscoverer
                 }
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         
         return null;
     }
@@ -614,7 +614,7 @@ public class UPnPDevice
                 return ip;
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         
         return null;
     }
@@ -649,7 +649,7 @@ public class UPnPDevice
             
             return response.IsSuccessStatusCode && !responseBody.Contains("error");
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         
         return false;
     }
@@ -676,7 +676,7 @@ public class UPnPDevice
             var response = await client.PostAsync(_serviceControlUrl, content);
             return response.IsSuccessStatusCode;
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         
         return false;
     }
@@ -705,7 +705,7 @@ public class UPnPDevice
                 _serviceControlUrl = new Uri(baseUri, controlPath).ToString();
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
     }
 }
 
@@ -742,7 +742,7 @@ public class NatPmpDiscoverer
                 }
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         
         return null;
     }
@@ -778,7 +778,7 @@ public class NatPmpDiscoverer
                 }
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         return null;
     }
 }
@@ -813,7 +813,7 @@ public class NatPmpDevice
                 return new IPAddress(ipBytes);
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         
         return null;
     }
@@ -863,7 +863,7 @@ public class NatPmpDevice
                 return actualPort > 0 ? actualPort : requestedExternalPort;
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         
         return 0;
     }

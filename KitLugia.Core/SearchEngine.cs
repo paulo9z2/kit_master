@@ -102,7 +102,7 @@ namespace KitLugia.Core
                     });
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             // 3. TWEAKS DE SEGURANÇA (GUARDIAN)
             try
@@ -123,13 +123,13 @@ namespace KitLugia.Core
                                 var all = Guardian.GetHarmfulTweaksWithStatus();
                                 return all.FirstOrDefault(t => t.Name == tweak.Name)?.Status == TweakStatus.MODIFIED;
                             }
-                            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+                            catch { return false; }
                         },
                         ExecuteAction = () => Guardian.ToggleTweak(tweak)
                     });
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             // 4. BLOATWARE (carregado em background)
             System.Threading.Tasks.Task.Run(() =>
@@ -153,7 +153,7 @@ namespace KitLugia.Core
                         }
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             });
 
             // 5. TWEAKS ESPECÍFICOS

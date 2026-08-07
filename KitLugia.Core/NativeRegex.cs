@@ -62,7 +62,7 @@ namespace KitLugia.Core
             {
                 return System.Text.RegularExpressions.Regex.IsMatch(text, pattern);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+            catch { return false; }
         }
 
         public static string Replace(string text, string pattern, string replacement)
@@ -79,7 +79,7 @@ namespace KitLugia.Core
             {
                 return System.Text.RegularExpressions.Regex.Replace(text, pattern, replacement);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return text; }
+            catch { return text; }
         }
 
         public static RegexMatchResult Match(string text, string pattern, bool caseInsensitive = false)
@@ -118,7 +118,7 @@ namespace KitLugia.Core
                     return new RegexMatchResult(groups);
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return RegexMatchResult.Failed;
         }

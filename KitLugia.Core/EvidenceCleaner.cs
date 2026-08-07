@@ -50,20 +50,20 @@ namespace KitLugia.Core
                     var names = key.GetValueNames();
                     foreach (var n in names)
                     {
-                        try { key.DeleteValue(n); count++; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { key.DeleteValue(n); count++; } catch { }
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             try
             {
                 string recent = Environment.GetFolderPath(Environment.SpecialFolder.Recent);
                 if (Directory.Exists(recent))
                 {
-                    foreach (var f in Directory.GetFiles(recent)) { try { File.Delete(f); count++; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); } }
+                    foreach (var f in Directory.GetFiles(recent)) { try { File.Delete(f); count++; } catch { } }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return count;
         }
 
@@ -80,12 +80,12 @@ namespace KitLugia.Core
                     {
                         if (n != "MRUListEx")
                         {
-                            try { key.DeleteValue(n); count++; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                            try { key.DeleteValue(n); count++; } catch { }
                         }
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return count;
         }
 
@@ -106,10 +106,10 @@ namespace KitLugia.Core
                     if (key != null)
                     {
                         var names = key.GetValueNames();
-                        foreach (var n in names) { try { key.DeleteValue(n); count++; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); } }
+                        foreach (var n in names) { try { key.DeleteValue(n); count++; } catch { } }
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
             return count;
         }
@@ -132,12 +132,12 @@ namespace KitLugia.Core
                         var names = key.GetValueNames();
                         foreach (var n in names)
                         {
-                            try { key.DeleteValue(n); count++; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                            try { key.DeleteValue(n); count++; } catch { }
                         }
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return count;
         }
 
@@ -159,13 +159,13 @@ namespace KitLugia.Core
                     {
                         foreach (var sub in key.GetSubKeyNames())
                         {
-                            try { key.DeleteSubKeyTree(sub); count++; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                            try { key.DeleteSubKeyTree(sub); count++; } catch { }
                         }
                         var names = key.GetValueNames();
-                        foreach (var n in names) { try { key.DeleteValue(n); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); } }
+                        foreach (var n in names) { try { key.DeleteValue(n); } catch { } }
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
             return count;
         }
@@ -182,7 +182,7 @@ namespace KitLugia.Core
                 {
                     foreach (var f in Directory.GetFiles(jlDir, "*.automaticDestinations-ms"))
                     {
-                        try { File.Delete(f); count++; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { File.Delete(f); count++; } catch { }
                     }
                 }
                 string customDir = Path.Combine(
@@ -192,11 +192,11 @@ namespace KitLugia.Core
                 {
                     foreach (var f in Directory.GetFiles(customDir, "*.customDestinations-ms"))
                     {
-                        try { File.Delete(f); count++; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { File.Delete(f); count++; } catch { }
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return count;
         }
 
@@ -221,12 +221,12 @@ namespace KitLugia.Core
                     {
                         foreach (var db in Directory.GetFiles(profileDir, "*.db"))
                         {
-                            try { File.Delete(db); count++; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                            try { File.Delete(db); count++; } catch { }
                         }
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return count;
         }
 
@@ -242,11 +242,11 @@ namespace KitLugia.Core
                 {
                     foreach (var f in Directory.GetFiles(clipDir))
                     {
-                        try { File.Delete(f); count++; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { File.Delete(f); count++; } catch { }
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return count;
         }
 
@@ -260,11 +260,11 @@ namespace KitLugia.Core
                 {
                     foreach (var f in Directory.GetFiles(prefetch, "*.pf"))
                     {
-                        try { File.Delete(f); count++; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { File.Delete(f); count++; } catch { }
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return count;
         }
 
@@ -285,15 +285,15 @@ namespace KitLugia.Core
                             {
                                 foreach (var sub in mruKey.GetSubKeyNames())
                                 {
-                                    try { mruKey.DeleteSubKeyTree(sub); count++; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                                    try { mruKey.DeleteSubKeyTree(sub); count++; } catch { }
                                 }
                             }
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return count;
         }
 
@@ -317,14 +317,14 @@ namespace KitLugia.Core
                         {
                             foreach (var sub in key.GetSubKeyNames())
                             {
-                                try { key.DeleteSubKeyTree(sub); count++; } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                                try { key.DeleteSubKeyTree(sub); count++; } catch { }
                             }
                         }
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return count;
         }
     }

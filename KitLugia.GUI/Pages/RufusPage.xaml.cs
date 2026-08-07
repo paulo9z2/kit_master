@@ -168,7 +168,7 @@ namespace KitLugia.GUI.Pages
                 if (clean.Length > 11) clean = clean[..11];
                 if (clean.Length > 0) TxtLabel.Text = clean;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         // ─── FORMAT ONLY (no ISO) ─────────────────────────────────

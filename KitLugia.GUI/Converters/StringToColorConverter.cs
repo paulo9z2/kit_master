@@ -16,7 +16,7 @@ namespace KitLugia.GUI.Converters
                 {
                     return (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(hex);
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); return Colors.Gray; }
+                catch { return Colors.Gray; }
             }
             return Colors.Gray;
         }

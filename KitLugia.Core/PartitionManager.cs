@@ -68,7 +68,7 @@ namespace KitLugia.Core
                 await RunProcess("sc", "config vds start= demand");
                 await RunProcess("net", "start vds");
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         // --- DISK ENUMERATION (IOCTL NATIVO - sem WMI, sem diskpart) ---
@@ -467,12 +467,12 @@ namespace KitLugia.Core
                                             }
                                         }
                                     }
-                                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                                    catch { }
                                     diskInfo.Partitions.Add(partInfo);
                                 }
                             }
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
 
                         // Sort partitions by offset and fill Gaps
                         diskInfo.Partitions = diskInfo.Partitions.OrderBy(p => p.StartingOffset).ToList();
@@ -505,7 +505,7 @@ namespace KitLugia.Core
                     part.Size = (ulong)drive.TotalSize;
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         // --- FORMAT PARTITION ---
@@ -883,7 +883,7 @@ namespace KitLugia.Core
             string scriptPath = Path.Combine(Path.GetTempPath(), "pm_querymax.txt");
             File.WriteAllText(scriptPath, script.ToString());
             var (_, output) = await RunProcess("diskpart.exe", $"/s \"{scriptPath}\"");
-            try { File.Delete(scriptPath); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            try { File.Delete(scriptPath); } catch { }
 
             // Parse agnóstico de idioma: pt-BR "O número máximo de bytes recuperáveis é: X MB"
             // en-US "The maximum number of reclaimable bytes is: X MB" (captura o valor antes de "MB")
@@ -1052,7 +1052,7 @@ namespace KitLugia.Core
                 int? bootDisk = NativeDiskIo.FindBootDiskNumber();
                 if (bootDisk.HasValue) return bootDisk.Value == (int)diskIndex;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             try
             {
@@ -1069,7 +1069,7 @@ namespace KitLugia.Core
                 }
                 return false;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return IsSystemDiskLegacy(diskIndex); }
+            catch { return IsSystemDiskLegacy(diskIndex); }
         }
 
         private static bool IsSystemDiskLegacy(uint diskIndex)
@@ -1093,7 +1093,7 @@ namespace KitLugia.Core
                 }
                 return false;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+            catch { return false; }
         }
 
         // --- REMOVE DRIVE LETTER ---
@@ -1251,7 +1251,7 @@ namespace KitLugia.Core
                     await Task.Run(() => File.Delete(path));
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         // --- DISK DETAIL INFO ---
@@ -1266,7 +1266,7 @@ namespace KitLugia.Core
             string scriptPath = Path.Combine(Path.GetTempPath(), "pm_detail.txt");
             File.WriteAllText(scriptPath, script.ToString());
             var (_, output) = await RunProcess("diskpart.exe", $"/s \"{scriptPath}\"");
-            try { File.Delete(scriptPath); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            try { File.Delete(scriptPath); } catch { }
             return output;
         }
 
@@ -1326,7 +1326,7 @@ namespace KitLugia.Core
             Logger.Log($"[MOVE] 4.Apply {(applyOk ? "OK" : "FALHOU")}");
 
             // Só apaga o snapshot se restaurou — em falha mantém o WIM para recuperação manual.
-            if (applyOk) { try { File.Delete(tempWim); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); } }
+            if (applyOk) { try { File.Delete(tempWim); } catch { } }
             else Logger.Log($"[MOVE] Snapshot mantido em {tempWim} para recuperação manual (Apply falhou).");
 
             if (applyOk) Log("Movimentação concluída com sucesso.");
@@ -1480,7 +1480,7 @@ namespace KitLugia.Core
             Log("--- DISKPART ---");
             Log(output);
 
-            try { File.Delete(scriptPath); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            try { File.Delete(scriptPath); } catch { }
 
             // Loga no terminal as linhas de erro do diskpart (antes só iam ao buffer interno)
             foreach (var line in output.Split('\n'))
@@ -1563,7 +1563,7 @@ namespace KitLugia.Core
                 proc.BeginErrorReadLine();
                 if (!proc.WaitForExit(300000))
                 {
-                    try { proc.Kill(entireProcessTree: true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    try { proc.Kill(entireProcessTree: true); } catch { }
                     fullOutput.AppendLine("[TIMEOUT] Processo excedeu 5 minutos e foi encerrado.");
                     proc.WaitForExit(5000); // aguarda o exit code ficar disponível após o Kill
                 }

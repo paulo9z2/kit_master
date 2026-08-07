@@ -154,7 +154,7 @@ namespace KitLugia.Core
                 foreach (var f in Directory.GetFiles(WinpeCacheDir, "boot.wim", SearchOption.AllDirectories))
                     if (new FileInfo(f).Length > 10 * 1024 * 1024) return f;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return null;
         }
 
@@ -184,7 +184,7 @@ namespace KitLugia.Core
                     File.Copy(found, WinpeBaseWimPath, true);
                     Log($"boot.wim copiado de {found} para {WinpeBaseWimPath}");
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
             return WinpeBaseWimPath;
         }
@@ -256,7 +256,7 @@ namespace KitLugia.Core
                 string finalWim = EnsureBootWimAtExpectedPath();
                 if (!File.Exists(finalWim) || new FileInfo(finalWim).Length <= 10 * 1024 * 1024)
                 {
-                    try { File.Delete(archivePath); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    try { File.Delete(archivePath); } catch { }
                     return (false, $"boot.wim não encontrado ou inválido após extração em: {finalWim}", null);
                 }
 
@@ -272,10 +272,10 @@ namespace KitLugia.Core
                     else
                         Log($"boot.wim assinatura OK: \"{sigStr}\".");
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
 
                 // Limpa o .7z
-                try { File.Delete(archivePath); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { File.Delete(archivePath); } catch { }
 
                 ReportProgress(100, "WinPE base pronto em cache local.");
                 return (true, "Download concluído", finalWim);
@@ -317,7 +317,7 @@ namespace KitLugia.Core
                 foreach (var f in Directory.GetFiles(WinpeCacheDir, "boot.sdi", SearchOption.AllDirectories))
                     if (new FileInfo(f).Length > 100 * 1024) return f;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return null;
         }
 
@@ -337,7 +337,7 @@ namespace KitLugia.Core
                     File.Copy(foundSdi, WinpeBaseSdiPath, true);
                     return WinpeBaseSdiPath;
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); return foundSdi; }
+                catch { return foundSdi; }
             }
 
             string winSdi = Path.Combine(
@@ -351,7 +351,7 @@ namespace KitLugia.Core
                     File.Copy(winSdi, WinpeBaseSdiPath, true);
                     return WinpeBaseSdiPath;
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); return winSdi; }
+                catch { return winSdi; }
             }
 
             // Tenta a partir do ADK se instalado
@@ -461,7 +461,7 @@ namespace KitLugia.Core
                 // Limpa montagem anterior (se existir)
                 if (Directory.Exists(mountDir))
                 {
-                    try { Directory.Delete(mountDir, true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    try { Directory.Delete(mountDir, true); } catch { }
                     // Tenta forçar via DISM cleanup
                     await RunDism("dism.exe", $"/Cleanup-Mountpoints", 30000);
                     Directory.CreateDirectory(mountDir);
@@ -528,7 +528,7 @@ namespace KitLugia.Core
                 {
                     await RunDism("dism.exe", $"/Unmount-Image /MountDir:\"{mountDir}\" /Discard", 120000);
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
                 return (false, $"Erro ao customizar WinPE: {ex.Message}");
             }
         }
@@ -550,7 +550,7 @@ namespace KitLugia.Core
             {
                 if (Directory.Exists(mountDir))
                 {
-                    try { Directory.Delete(mountDir, true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    try { Directory.Delete(mountDir, true); } catch { }
                     await RunDism("dism.exe", "/Cleanup-Mountpoints", 30000);
                 }
                 Directory.CreateDirectory(mountDir);
@@ -592,7 +592,7 @@ namespace KitLugia.Core
             catch (Exception ex)
             {
                 Log($"Erro ao customizar boot.wim flat: {ex.Message}");
-                try { await RunDism("dism.exe", $"/Unmount-Image /MountDir:\"{mountDir}\" /Discard", 120000); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { await RunDism("dism.exe", $"/Unmount-Image /MountDir:\"{mountDir}\" /Discard", 120000); } catch { }
                 return false;
             }
         }
@@ -608,7 +608,7 @@ namespace KitLugia.Core
             {
                 if (Directory.Exists(mountDir))
                 {
-                    try { Directory.Delete(mountDir, true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    try { Directory.Delete(mountDir, true); } catch { }
                     await RunDism("dism.exe", "/Cleanup-Mountpoints", 30000);
                 }
                 Directory.CreateDirectory(mountDir);
@@ -640,7 +640,7 @@ namespace KitLugia.Core
             catch (Exception ex)
             {
                 Log($"Erro ao injetar {scriptName} no boot.wim: {ex.Message}");
-                try { await RunDism("dism.exe", $"/Unmount-Image /MountDir:\"{mountDir}\" /Discard", 120000); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { await RunDism("dism.exe", $"/Unmount-Image /MountDir:\"{mountDir}\" /Discard", 120000); } catch { }
                 return false;
             }
         }
@@ -1022,7 +1022,7 @@ namespace KitLugia.Core
             {
                 if (Directory.Exists(mountDir))
                 {
-                    try { Directory.Delete(mountDir, true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    try { Directory.Delete(mountDir, true); } catch { }
                     await RunDism("dism.exe", "/Cleanup-Mountpoints", 30000);
                 }
                 Directory.CreateDirectory(mountDir);
@@ -1060,7 +1060,7 @@ namespace KitLugia.Core
             catch (Exception ex)
             {
                 Log($"Erro ao injetar boot files no boot.wim: {ex.Message}");
-                try { await RunDism("dism.exe", $"/Unmount-Image /MountDir:\"{mountDir}\" /Discard", 120000); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { await RunDism("dism.exe", $"/Unmount-Image /MountDir:\"{mountDir}\" /Discard", 120000); } catch { }
                 return false;
             }
         }
@@ -1182,7 +1182,7 @@ namespace KitLugia.Core
             {
                 if (Directory.Exists(workDir)) Directory.Delete(workDir, true);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             Directory.CreateDirectory(workDir);
 
             string sourcesDir = Path.Combine(workDir, "sources");
@@ -1207,7 +1207,7 @@ namespace KitLugia.Core
                 {
                     if (Directory.Exists(efiDest)) Directory.Delete(efiDest, true);
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
                 CopyDirectory(WinpeBaseEfiDir, efiDest);
             }
 
@@ -1230,7 +1230,7 @@ namespace KitLugia.Core
             foreach (var file in Directory.GetFiles(sourceDir))
             {
                 try { File.Copy(file, Path.Combine(destinationDir, Path.GetFileName(file)), true); }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
             foreach (var dir in Directory.GetDirectories(sourceDir))
             {
@@ -1246,7 +1246,7 @@ namespace KitLugia.Core
                 if (Directory.Exists(WinpeCacheDir))
                     Directory.Delete(WinpeCacheDir, true);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         // ======================================================================
@@ -1285,7 +1285,7 @@ namespace KitLugia.Core
 
                 return (true, kitsRoot, peRoot);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return (false, "", ""); }
+            catch { return (false, "", ""); }
         }
 
         // ======================================================================
@@ -1470,7 +1470,7 @@ namespace KitLugia.Core
                     sb.AppendLine($"  Aviso: {output.Trim().Replace("\n", "; ")}");
 
                 // Limpeza
-                try { Directory.Delete(tempDriverDir, true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { Directory.Delete(tempDriverDir, true); } catch { }
 
                 sb.AppendLine($"Drivers injetados (pelo menos {copied} .inf copiados).");
                 return (true, sb.ToString());
@@ -1616,7 +1616,7 @@ namespace KitLugia.Core
                 {
                     await RunDism("dism.exe", $"/Unmount-Image /MountDir:\"{mountDir}\" /Discard", 60000);
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
 
                 return (false, $"Erro ao customizar WinPE: {ex.Message}");
             }
@@ -1750,7 +1750,7 @@ namespace KitLugia.Core
                 if (Directory.Exists(mountDir))
                     Directory.Delete(mountDir, true);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             Log("\n========== WINPE CONSTRUIDO COM SUCESSO ==========");
             return (true, sb.ToString(), isoPath);
@@ -1781,7 +1781,7 @@ namespace KitLugia.Core
 
             if (await Task.WhenAny(readTask, Task.Delay(timeoutMs)).ConfigureAwait(false) != readTask)
             {
-                try { proc.Kill(entireProcessTree: true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { proc.Kill(entireProcessTree: true); } catch { }
                 return (-1, $"TIMEOUT após {timeoutMs}ms");
             }
 
@@ -1816,7 +1816,7 @@ namespace KitLugia.Core
 
             if (await Task.WhenAny(readTask, Task.Delay(timeoutMs)).ConfigureAwait(false) != readTask)
             {
-                try { proc.Kill(entireProcessTree: true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { proc.Kill(entireProcessTree: true); } catch { }
                 return (-1, $"TIMEOUT após {timeoutMs}ms");
             }
 
@@ -1862,7 +1862,7 @@ namespace KitLugia.Core
 
             var (code, output) = await RunProcess(wimlibExe, args, 60000);
 
-            try { File.Delete(tmpScript); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            try { File.Delete(tmpScript); } catch { }
 
             if (code == 0)
             {
@@ -1910,7 +1910,7 @@ namespace KitLugia.Core
             string args = $"update \"{wimPath}\" 1 --command=\"add {escapedTmpStartnet} {system32Path}/startnet.cmd\"";
             var (code, output) = await RunProcess(wimlibExe, args, 60000);
 
-            try { File.Delete(tmpStartnet); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            try { File.Delete(tmpStartnet); } catch { }
 
             if (code == 0)
             {
@@ -1973,7 +1973,7 @@ namespace KitLugia.Core
             {
                 if (Directory.Exists(mountDir))
                 {
-                    try { Directory.Delete(mountDir, true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    try { Directory.Delete(mountDir, true); } catch { }
                     await RunDism("dism.exe", "/Cleanup-Mountpoints", 30000);
                 }
                 Directory.CreateDirectory(mountDir);
@@ -2007,7 +2007,7 @@ namespace KitLugia.Core
             catch (Exception ex)
             {
                 Log($"Erro ao injetar wimlib via DISM: {ex.Message}");
-                try { await RunDism("dism.exe", $"/Unmount-Image /MountDir:\"{mountDir}\" /Discard", 120000); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { await RunDism("dism.exe", $"/Unmount-Image /MountDir:\"{mountDir}\" /Discard", 120000); } catch { }
                 return false;
             }
         }

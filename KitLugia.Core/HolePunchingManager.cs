@@ -257,7 +257,7 @@ public sealed class HolePunchingManager : IDisposable
                 pos += 4 + attrLen + (4 - attrLen % 4) % 4; // Alinhamento a 4 bytes
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         
         return (string.Empty, 0);
     }
@@ -312,13 +312,13 @@ public sealed class HolePunchingManager : IDisposable
                         var msg = Encoding.UTF8.GetBytes("PUNCH_KEEPALIVE");
                         await _udpClient.SendAsync(msg, msg.Length, peer);
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
                 
                 await Task.Delay(5000, ct); // A cada 5 segundos
             }
         }
-        catch { Logger.LogWarning("HolePunchingManager", "Exception suppressed"); }
+        catch { }
     }
 
     private async Task PunchToPeerAsync(IPEndPoint peer, CancellationToken ct)

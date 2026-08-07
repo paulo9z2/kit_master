@@ -148,7 +148,7 @@ namespace KitLugia.Core
             _cts?.Cancel();
 
             // Fechar listener
-            try { _listener?.Stop(); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            try { _listener?.Stop(); } catch { }
             _listener = null;
 
             // Fechar todas as conexões ativas
@@ -161,7 +161,7 @@ namespace KitLugia.Core
 
             foreach (var conn in connections)
             {
-                try { conn.Dispose(); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { conn.Dispose(); } catch { }
             }
 
             _isRunning = false;
@@ -239,13 +239,13 @@ namespace KitLugia.Core
                         Interlocked.Add(ref _bytesTransferred, bytesRead);
                     }
                 }
-                catch { Logger.LogWarning("TcpProxyManager", "Exception suppressed"); }
+                catch { }
             }
 
             public void Dispose()
             {
-                try { _client?.Close(); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
-                try { _targetClient?.Close(); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { _client?.Close(); } catch { }
+                try { _targetClient?.Close(); } catch { }
             }
         }
     }

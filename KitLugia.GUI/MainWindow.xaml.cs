@@ -382,7 +382,7 @@ namespace KitLugia.GUI
                     ShowInfo("📶 GoodbyeDPI", "Ative o GoodbyeDPI para aplicar as novas configurações.");
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         // Ativa GoodbyeDPI (método auxiliar)
@@ -663,7 +663,7 @@ namespace KitLugia.GUI
                         Logger.Log($"KitLugia iniciado: {currentPath}");
                         TrayIconService.SetAutoStart(true);
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 });
                 
 
@@ -742,7 +742,7 @@ namespace KitLugia.GUI
                             });
                         }
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
             }) { IsBackground = true, Name = "ShowWindowMonitor" };
             _showWindowMonitor.Start();
@@ -988,7 +988,7 @@ namespace KitLugia.GUI
                     if (item.IsToggle && item.CheckState != null)
                     {
                         try { item.IsActive = item.CheckState.Invoke(); }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
                     }
                 });
 
@@ -1230,7 +1230,7 @@ namespace KitLugia.GUI
                         {
                             cleanupMethod.Invoke(previousPage, null);
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
                     }
                 }
 
@@ -1246,7 +1246,7 @@ namespace KitLugia.GUI
                         while (MainFrame.NavigationService.CanGoBack)
                             MainFrame.NavigationService.RemoveBackEntry();
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }), System.Windows.Threading.DispatcherPriority.Background);
             }
             catch (Exception ex)
@@ -1437,7 +1437,7 @@ namespace KitLugia.GUI
                                     proc.Kill();
                                     proc.WaitForExit(5000);
                                 }
-                                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                                catch { }
                             }
                             _goodbyeDpiProcess = null;
                             Logger.Log("GOODBYEDPI: Processos externos encerrados");
@@ -1701,7 +1701,7 @@ namespace KitLugia.GUI
                     return currentName.Equals(pageName, StringComparison.OrdinalIgnoreCase);
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return true; // em caso de erro, mostra o toast
         }
 
@@ -2454,7 +2454,7 @@ namespace KitLugia.GUI
                         });
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
                 System.IO.File.Delete(notificationFile);
             }
         }
@@ -2679,7 +2679,7 @@ namespace KitLugia.GUI
             {
                 e.Cancel = true; // Cancelar o fechamento
                 this.Hide(); // Minimizar para tray
-                try { _trayService?.ShowMinimizedNotification(); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { _trayService?.ShowMinimizedNotification(); } catch { }
                 KitLugia.Core.Logger.Log("🔔 Janela minimizada para Tray (Close to Tray ativado)");
             }
             else
@@ -2700,7 +2700,7 @@ namespace KitLugia.GUI
         public void ForceShutdown()
         {
             _isShuttingDown = true;
-            try { _trayService?.Dispose(); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            try { _trayService?.Dispose(); } catch { }
             Application.Current.Shutdown();
         }
 

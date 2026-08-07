@@ -42,7 +42,7 @@ namespace KitLugia.Core
             if (string.IsNullOrWhiteSpace(CleanValue)) return false;
             if (CleanValue.Contains('%') && CleanValue.IndexOf('%') < CleanValue.LastIndexOf('%')) return true;
             try { return Directory.Exists(ExpandedValue); }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+            catch { return false; }
         }
     }
 

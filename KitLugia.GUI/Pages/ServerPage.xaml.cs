@@ -93,7 +93,7 @@ namespace KitLugia.GUI.Pages
                                 string procName = Process.GetProcessById(pid).ProcessName;
                                 result.Add((port, procName));
                             }
-                            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                            catch { }
                         }
                         return result;
                     });
@@ -315,7 +315,7 @@ namespace KitLugia.GUI.Pages
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             
             return null;
         }
@@ -476,7 +476,7 @@ namespace KitLugia.GUI.Pages
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             
             return null;
         }
@@ -527,7 +527,7 @@ namespace KitLugia.GUI.Pages
                     Log("⏹️ Tunnel parado.");
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         // ─── Testar Conexão ───────────────────────────────────────────────
@@ -607,7 +607,7 @@ namespace KitLugia.GUI.Pages
                 var completed = await Task.WhenAny(connectTask, timeoutTask);
                 return completed == connectTask && tcpClient.Connected;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+            catch { return false; }
         }
 
         // ─── Copiar Endereço ────────────────────────────────────────────────
@@ -670,7 +670,7 @@ namespace KitLugia.GUI.Pages
                     LogScroller?.ScrollToEnd();
                 });
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         // ─── Utilitários de Rede ─────────────────────────────────────────────
@@ -703,7 +703,7 @@ namespace KitLugia.GUI.Pages
                     if (IPAddress.TryParse(ip, out _) && ip != "0.0.0.0" && ip != "127.0.0.1")
                         return ip;
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             return null;

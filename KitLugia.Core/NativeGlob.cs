@@ -36,7 +36,7 @@ namespace KitLugia.Core
                 return System.Text.RegularExpressions.Regex.IsMatch(path, regexPattern,
                     System.Text.RegularExpressions.RegexOptions.IgnoreCase);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+            catch { return false; }
         }
     }
 }

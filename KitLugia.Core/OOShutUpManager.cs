@@ -1520,7 +1520,7 @@ namespace KitLugia.Core
                     return val.ToString() == setting.SafeValue?.ToString();
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+            catch { return false; }
         }
 
         private static string _backupDir = "";
@@ -1552,7 +1552,7 @@ namespace KitLugia.Core
                 File.WriteAllText(Path.Combine(GetBackupDir(), fileName), backup, Encoding.UTF8);
                 Logger.Log($"Backup salvo: {fileName}");
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         public static bool ApplyPrivacySetting(PrivacySetting setting)

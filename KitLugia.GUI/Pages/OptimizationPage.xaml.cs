@@ -343,7 +343,7 @@ namespace KitLugia.GUI.Pages
                 System.Threading.Thread.Sleep(100);
                 return counter.NextValue();
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return 0; }
+            catch { return 0; }
         }
 
         private void ShowResult(string message)

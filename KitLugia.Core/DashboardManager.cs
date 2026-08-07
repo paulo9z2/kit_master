@@ -44,13 +44,13 @@ namespace KitLugia.Core
                 using var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0");
                 cpuName = key?.GetValue("ProcessorNameString")?.ToString() ?? "Desconhecido";
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             try
             {
                 osName = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             try
             {

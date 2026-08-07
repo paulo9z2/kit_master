@@ -42,14 +42,14 @@ namespace KitLugia.Core
 
                 string sd = Path.Combine(windir, "SoftwareDistribution");
                 string oldSd = sd + ".old";
-                if (Directory.Exists(oldSd)) try { Directory.Delete(oldSd, true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
-                if (Directory.Exists(sd)) try { Directory.Move(sd, oldSd); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                if (Directory.Exists(oldSd)) try { Directory.Delete(oldSd, true); } catch { }
+                if (Directory.Exists(sd)) try { Directory.Move(sd, oldSd); } catch { }
                 log.Add("  - 'SoftwareDistribution' limpa.");
 
                 string cr = Path.Combine(systemdir, "catroot2");
                 string oldCr = cr + ".old";
-                if (Directory.Exists(oldCr)) try { Directory.Delete(oldCr, true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
-                if (Directory.Exists(cr)) try { Directory.Move(cr, oldCr); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                if (Directory.Exists(oldCr)) try { Directory.Delete(oldCr, true); } catch { }
+                if (Directory.Exists(cr)) try { Directory.Move(cr, oldCr); } catch { }
                 log.Add("  - 'Catroot2' limpa.");
             }
             catch (Exception ex)
@@ -122,7 +122,7 @@ namespace KitLugia.Core
                 }
                 return (true, "ATIVO (Em execução)");
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return (false, "Erro ao ler status"); }
+            catch { return (false, "Erro ao ler status"); }
         }
 
         /// <summary>

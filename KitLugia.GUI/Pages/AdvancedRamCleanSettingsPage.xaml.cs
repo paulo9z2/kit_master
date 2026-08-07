@@ -110,7 +110,7 @@ namespace KitLugia.GUI.Pages
                         ["DangerLevel"] = (int)key.GetValue("DangerLevel", 90)
                     };
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); return null; }
+                catch { return null; }
             });
 
             if (data == null) return;

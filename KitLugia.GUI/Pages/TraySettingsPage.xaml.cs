@@ -199,7 +199,7 @@ namespace KitLugia.GUI.Pages
 
                 TxtStatusText.Foreground = TxtPercentMain.Foreground;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         // --- EVENT HANDLERS ---
@@ -313,7 +313,7 @@ namespace KitLugia.GUI.Pages
                 // Verificar se funcionou atualizando o estado
                 ChkAutoStart.IsChecked = TrayIconService.IsAutoStartEnabled();
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         private void SliderThreshold_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

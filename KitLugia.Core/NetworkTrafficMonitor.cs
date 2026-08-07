@@ -145,7 +145,7 @@ namespace KitLugia.Core
                 }
                 finally { Marshal.FreeHGlobal(buffer); }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         /// <summary>
@@ -178,10 +178,13 @@ namespace KitLugia.Core
                     string? procName = null;
                     try
                     {
-                        using var proc = Process.GetProcessById((int)pid);
-                        procName = proc.ProcessName;
+                        if (ProcessHelper.TryGetProcessById((int)pid, out var proc))
+                        {
+                            using var procRef = proc;
+                            procName = proc.ProcessName;
+                        }
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); continue; }
+                    catch { continue; }
                     if (string.IsNullOrEmpty(procName)) continue;
 
                     // Lê performance counters de IO
@@ -237,7 +240,7 @@ namespace KitLugia.Core
 
                 _lastSampleTime = now;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return snapshot;
         }
@@ -257,7 +260,7 @@ namespace KitLugia.Core
                         using var proc = Process.GetProcessById((int)pid);
                         activeNames.Add(proc.ProcessName);
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
 
                 foreach (var key in _ioReadCounters.Keys.ToList())
@@ -269,7 +272,7 @@ namespace KitLugia.Core
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         /// <summary>

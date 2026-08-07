@@ -126,7 +126,7 @@ namespace KitLugia.GUI.Pages
                         .Take(50)
                         .ToList();
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); return new List<ProcessMonitorInfo>(); }
+                catch { return new List<ProcessMonitorInfo>(); }
             });
 
             try
@@ -284,7 +284,7 @@ namespace KitLugia.GUI.Pages
 
                 return totalActivity / (1024 * 1024); // Converter para MB
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return 0; }
+            catch { return 0; }
         }
 
         private void ActivateUltraPerformanceMode()
@@ -498,7 +498,7 @@ namespace KitLugia.GUI.Pages
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return "N/A"; }
+            catch { return "N/A"; }
             return "N/A";
         }
 

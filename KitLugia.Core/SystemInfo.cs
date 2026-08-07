@@ -173,7 +173,7 @@ namespace KitLugia.Core
                 GetNativeSystemInfo(out SYSTEM_INFO sysInfo);
                 return (int)sysInfo.dwNumberOfProcessors;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return Environment.ProcessorCount; }
+            catch { return Environment.ProcessorCount; }
         }
 
         /// <summary>

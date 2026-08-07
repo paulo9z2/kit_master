@@ -489,6 +489,7 @@
                         <TextBlock Text="&#128640; 7-MAX Large Pages" FontSize="16" FontWeight="Bold" Foreground="White" Margin="0,0,0,5"/>
                         <TextBlock Text="&#9888; Força alocação de memória com Large Pages (2MB) para apps memory-intensive (ex: 7-Zip). Requer privilégios elevados." FontSize="11" Foreground="#FFD700" Margin="0,0,0,5" TextWrapping="Wrap"/>
                         <TextBlock Text="Baseado no 7-max 24.01 (Igor Pavlov). Pode ser instável em sistemas com fragmentação de memória. Use por conta e risco." FontSize="11" Foreground="#AAA" TextWrapping="Wrap"/>
+                        <TextBlock x:Name="TxtSevenMaxStatus" Text="&#128308; Desativado" FontSize="12" FontWeight="Bold" Foreground="#FF6B6B" Margin="0,6,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                     <ToggleButton x:Name="TglSevenMax" Grid.Column="1" Style="{StaticResource GoldToggleStyle}"
                                   Checked="TglSevenMax_Click" Unchecked="TglSevenMax_Click"/>

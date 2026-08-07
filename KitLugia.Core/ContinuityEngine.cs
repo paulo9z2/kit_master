@@ -108,7 +108,7 @@ namespace KitLugia.Core
                     .EnumerateFiles("*", SearchOption.AllDirectories)
                     .Sum(fi => fi.Length);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return 0; }
+            catch { return 0; }
         }
     }
 }

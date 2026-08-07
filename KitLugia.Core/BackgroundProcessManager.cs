@@ -199,7 +199,7 @@ namespace KitLugia.Core
                             return (true, "Forçado via Registro com sucesso.");
                         }
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
 
                     return (false, $"Erro ao configurar: {result}");
                 }

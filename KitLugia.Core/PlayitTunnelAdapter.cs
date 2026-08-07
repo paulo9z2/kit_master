@@ -203,7 +203,7 @@ public sealed class PlayitTunnelAdapter : IDisposable
             // Assinatura MZ = 0x4D5A ("MZ")
             return buffer[0] == 0x4D && buffer[1] == 0x5A;
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+        catch { return false; }
     }
 
     /// <summary>
@@ -313,7 +313,7 @@ public sealed class PlayitTunnelAdapter : IDisposable
             _isRunning = false;
             _publicUrl = null;
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
     }
 
     /// <summary>

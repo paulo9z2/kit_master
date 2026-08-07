@@ -210,7 +210,7 @@ public sealed class TunnelManager : IDisposable
                 return process.ExitCode == 0;
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
 
         return false;
     }
@@ -382,7 +382,7 @@ public sealed class TunnelManager : IDisposable
             var response = await _httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
             return response.IsSuccessStatusCode || response.StatusCode == System.Net.HttpStatusCode.BadRequest; // BadRequest pode indicar que tunnel está ativo
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
 
         return false;
     }
@@ -416,7 +416,7 @@ public sealed class TunnelManager : IDisposable
             listener.Stop();
             return true;
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
 
         return false;
     }
@@ -441,7 +441,7 @@ public sealed class TunnelManager : IDisposable
                 {
                     File.Delete(tunnel.ConfigPath);
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
         }
         catch (Exception ex)

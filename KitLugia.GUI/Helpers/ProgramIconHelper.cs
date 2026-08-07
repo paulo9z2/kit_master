@@ -109,7 +109,7 @@ namespace KitLugia.GUI.Helpers
                     if (icon != null) return icon;
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return null;
         }
@@ -164,7 +164,7 @@ namespace KitLugia.GUI.Helpers
                             }
                         }
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
 
                 // ExtractAssociatedIcon com índice específico
@@ -182,7 +182,7 @@ namespace KitLugia.GUI.Helpers
                                 result = IconToBitmapSource(icon);
                         }
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
 
                 // Se não achou e o caminho não existe, tenta localizar o arquivo
@@ -193,7 +193,7 @@ namespace KitLugia.GUI.Helpers
                         result = GetIconFromFile(foundPath, iconIndex);
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             lock (CacheLock)
             {
@@ -246,7 +246,7 @@ namespace KitLugia.GUI.Helpers
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return null;
         }
@@ -267,7 +267,7 @@ namespace KitLugia.GUI.Helpers
                 bitmap.Freeze();
                 return bitmap;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return null; }
+            catch { return null; }
         }
 
         private static BitmapSource? IconToBitmapSource(System.Drawing.Icon icon)
@@ -289,7 +289,7 @@ namespace KitLugia.GUI.Helpers
                     return bitmapImage;
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return null; }
+            catch { return null; }
         }
 
         public static BitmapSource? GetGenericIcon()
@@ -313,7 +313,7 @@ namespace KitLugia.GUI.Helpers
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return null;
         }

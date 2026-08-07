@@ -162,7 +162,7 @@ namespace KitLugia.GUI.Pages
                 Win32Api.GetWindowText(hwnd, sb, sb.Capacity);
                 return sb.ToString();
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return ""; }
+            catch { return ""; }
         }
 
         private double GetCpuUsage(Process proc)
@@ -174,7 +174,7 @@ namespace KitLugia.GUI.Pages
                 System.Threading.Thread.Sleep(100);
                 return counter.NextValue() / Environment.ProcessorCount;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return 0;
         }
 
@@ -329,6 +329,23 @@ namespace KitLugia.GUI.Pages
                 if (ChkProBalance != null) ChkProBalance.IsChecked = proBalance;
                 if (TglForegroundBoost != null) TglForegroundBoost.IsChecked = foregroundBoost;
                 if (TglSevenMax != null) TglSevenMax.IsChecked = sevenMaxEnabled;
+
+                // 7-MAX: revalida o privilégio ao iniciar (sessão nova pode não ter admin)
+                if (sevenMaxEnabled)
+                {
+                    LargePageManager.ResetPrivilegeState();
+                    if (LargePageManager.TryTestAllocation(out ulong pageSize2, out string sevenMaxError))
+                    {
+                        UpdateSevenMaxStatus(true, $"ATIVADO - Large Page de {pageSize2 / 1024} KB detectada");
+                    }
+                    else
+                    {
+                        KitLugia.Core.Logger.Log($"🧠 7-MAX Large Pages: falhou na inicialização - {sevenMaxError}");
+                        if (TglSevenMax != null) TglSevenMax.IsChecked = false;
+                        UpdateSevenMaxStatus(false, $"Falha: {sevenMaxError}");
+                        SaveGameBoostSettings();
+                    }
+                }
 
 
                 string gameBarPath = Path.Combine(Environment.SystemDirectory, "GameBarPresenceWriter.exe");
@@ -955,8 +972,37 @@ namespace KitLugia.GUI.Pages
         {
             if (_isLoadingSettings) return;
             bool enabled = TglSevenMax?.IsChecked == true;
-            KitLugia.Core.Logger.Log($"🧠 7-MAX Large Pages: {(enabled ? "ATIVADO" : "DESATIVADO")}");
+
+            if (enabled)
+            {
+                if (LargePageManager.TryTestAllocation(out ulong pageSize, out string error))
+                {
+                    KitLugia.Core.Logger.Log($"🧠 7-MAX Large Pages: ATIVADO (Large Page de {pageSize / 1024} KB)");
+                    UpdateSevenMaxStatus(true, $"ATIVADO - Large Page de {pageSize / 1024} KB detectada");
+                }
+                else
+                {
+                    KitLugia.Core.Logger.Log($"🧠 7-MAX Large Pages: FALHOU - {error}");
+                    if (TglSevenMax != null) TglSevenMax.IsChecked = false;
+                    UpdateSevenMaxStatus(false, $"Falha: {error}");
+                }
+            }
+            else
+            {
+                KitLugia.Core.Logger.Log("🧠 7-MAX Large Pages: DESATIVADO");
+                UpdateSevenMaxStatus(false, "Desativado");
+            }
+
             SaveGameBoostSettings();
+        }
+
+        private void UpdateSevenMaxStatus(bool enabled, string message)
+        {
+            if (TxtSevenMaxStatus == null) return;
+            TxtSevenMaxStatus.Text = (enabled ? "&#128994; " : "&#128308; ") + message;
+            TxtSevenMaxStatus.Foreground = new SolidColorBrush(
+                enabled ? System.Windows.Media.Color.FromRgb(0x00, 0xD4, 0xAA)
+                        : System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x6B));
         }
 
         private void UpdateProBalanceStatusText(bool isEnabled)

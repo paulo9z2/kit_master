@@ -255,7 +255,7 @@ namespace KitLugia.Core
 
                 return AdjustTokenPrivileges(tokenHandle, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+            catch { return false; }
             finally
             {
                 if (tokenHandle != IntPtr.Zero)

@@ -86,7 +86,7 @@ namespace KitLugia.GUI.Pages
                 int recommendedIndex = profiles.FindIndex(p => p.IsRecommended);
                 ComboAutomationProfiles.SelectedIndex = recommendedIndex >= 0 ? recommendedIndex : 0;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         private void ComboAutomationProfiles_SelectionChanged(object sender, SelectionChangedEventArgs e)

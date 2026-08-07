@@ -314,7 +314,7 @@ namespace KitLugia.Core
                 var version = assembly.GetName().Version;
                 return version ?? new Version("1.0.0");
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return new Version("1.0.0"); }
+            catch { return new Version("1.0.0"); }
         }
 
         private static Version ParseVersion(string tag)
@@ -324,7 +324,7 @@ namespace KitLugia.Core
                 var cleanTag = tag.StartsWith("v") ? tag.Substring(1) : tag;
                 return Version.Parse(cleanTag);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return new Version("1.0.0"); }
+            catch { return new Version("1.0.0"); }
         }
 
         private static string ComputeSha256(string filePath)

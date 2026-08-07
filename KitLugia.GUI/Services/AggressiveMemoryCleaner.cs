@@ -102,7 +102,7 @@ namespace KitLugia.GUI.Services
                     _ = PerformIntelligentCleanup();
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace KitLugia.GUI.Services
 
                 return (before, after, freed);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return (before, before, 0); }
+            catch { return (before, before, 0); }
         }
 
         // Mantém o método antigo para compatibilidade (chama o novo)
@@ -174,7 +174,7 @@ namespace KitLugia.GUI.Services
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return pages;
         }
@@ -196,7 +196,7 @@ namespace KitLugia.GUI.Services
                     FindPagesInVisualTree(child, pages);
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace KitLugia.GUI.Services
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace KitLugia.GUI.Services
             {
                 return page.IsVisible;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+            catch { return false; }
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace KitLugia.GUI.Services
                         GCSettings.LatencyMode = oldMode;
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             });
         }
         

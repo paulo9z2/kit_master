@@ -279,7 +279,7 @@ public sealed class UniversalTunnelAdapter : IDisposable
 
             return null;
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); return null; }
+        catch { return null; }
     }
 
     /// <summary>
@@ -312,7 +312,7 @@ public sealed class UniversalTunnelAdapter : IDisposable
 
             return null;
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); return null; }
+        catch { return null; }
     }
 
     /// <summary>
@@ -423,7 +423,7 @@ public sealed class UniversalTunnelAdapter : IDisposable
             _isRunning = false;
             _publicUrl = null;
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
     }
 
     /// <summary>

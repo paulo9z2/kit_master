@@ -236,7 +236,7 @@ public sealed class VirtualNetworkAdapter : IDisposable
                 return ip.Trim();
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
 
         return null;
     }
@@ -254,7 +254,7 @@ public sealed class VirtualNetworkAdapter : IDisposable
             var adapters = NetworkInterface.GetAllNetworkInterfaces();
             return adapters.Any(a => a.Name.Equals(_virtualAdapterName, StringComparison.OrdinalIgnoreCase));
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+        catch { return false; }
     }
 
     /// <summary>

@@ -33,7 +33,7 @@ namespace KitLugia.GUI.Helpers
                     icon = LoadImageFromFile(iconPath, size);
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             lock (CacheLock)
             {
@@ -86,12 +86,12 @@ namespace KitLugia.GUI.Helpers
                                     }
                                 }
                             }
-                            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                            catch { }
                         }
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return null;
         }
@@ -126,7 +126,7 @@ namespace KitLugia.GUI.Helpers
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return null;
         }
 
@@ -164,7 +164,7 @@ namespace KitLugia.GUI.Helpers
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             // 5) Último recurso: qualquer .png ou .ico na raiz
             try
@@ -176,7 +176,7 @@ namespace KitLugia.GUI.Helpers
                         return file;
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return null;
         }
@@ -206,7 +206,7 @@ namespace KitLugia.GUI.Helpers
                     }
                 }
             }
-            catch { Logger.LogWarning("AppIconHelper", "Exception suppressed"); }
+            catch { }
 
             return null;
         }
@@ -244,7 +244,7 @@ namespace KitLugia.GUI.Helpers
                 string exact = Path.Combine(installLocation, logoPath);
                 if (File.Exists(exact)) return exact;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return null;
         }
@@ -275,7 +275,7 @@ namespace KitLugia.GUI.Helpers
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return best;
         }
@@ -294,7 +294,7 @@ namespace KitLugia.GUI.Helpers
                 bitmap.Freeze();
                 return bitmap;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return null; }
+            catch { return null; }
         }
 
         private static BitmapSource? _cachedGenericIcon;
@@ -316,7 +316,7 @@ namespace KitLugia.GUI.Helpers
                     else
                         _cachedGenericIcon = app.Dispatcher.Invoke(CreateGenericStoreIcon);
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); return null; }
+                catch { return null; }
             }
 
             return _cachedGenericIcon;

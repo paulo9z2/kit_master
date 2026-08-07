@@ -52,7 +52,7 @@ namespace KitLugia.Core
                 byte[] hash = SHA256.HashData(stream);
                 return Convert.ToHexStringLower(hash);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return null; }
+            catch { return null; }
         }
     }
 }

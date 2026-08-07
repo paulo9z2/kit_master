@@ -279,7 +279,7 @@ public sealed class KitTunnelManager : IDisposable
                 }
             }
         }
-        catch { Logger.LogWarning("KitTunnelManager", "Exception suppressed"); }
+        catch { }
     }
 
     private async Task RunLocalRelayServerAsync(int relayPort, int localPort, CancellationToken ct)
@@ -348,7 +348,7 @@ public sealed class KitTunnelManager : IDisposable
             
             OnBytesTransferred?.Invoke(totalBytes);
         }
-        catch { Logger.LogWarning("KitTunnelManager", "Exception suppressed"); }
+        catch { }
     }
 
     private async Task<string?> GetPublicIPAsync()
@@ -377,10 +377,10 @@ public sealed class KitTunnelManager : IDisposable
                         return ip;
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         
         return null;
     }

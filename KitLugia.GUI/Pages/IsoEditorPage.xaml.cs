@@ -407,8 +407,8 @@ AllowUserConfig=true
                     // Limpar diretórios temporários em background
                     await Task.Run(() =>
                     {
-                        try { Directory.Delete(workDir, true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
-                        try { Directory.Delete(driverExportDir, true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { Directory.Delete(workDir, true); } catch { }
+                        try { Directory.Delete(driverExportDir, true); } catch { }
                     });
                 }
                 else
@@ -517,7 +517,7 @@ AllowUserConfig=true
                         await unmountProcess.WaitForExitAsync();
                     }
 
-                    try { Directory.Delete(bootMountDir, true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    try { Directory.Delete(bootMountDir, true); } catch { }
                 }
                 catch (Exception ex)
                 {
@@ -676,7 +676,7 @@ AllowUserConfig=true
                 };
                 await (Process.Start(psi)?.WaitForExitAsync() ?? Task.CompletedTask);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         private async Task DeleteScheduledTaskFiles(string mountDir)
@@ -706,7 +706,7 @@ AllowUserConfig=true
                         if (Directory.Exists(taskPath))
                         {
                             try { Directory.Delete(taskPath, true); }
-                            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                            catch { }
                         }
                     }
                 }
@@ -792,10 +792,10 @@ AllowUserConfig=true
                     {
                         Directory.Delete(workDir, true);
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         private void AddLog(string message)

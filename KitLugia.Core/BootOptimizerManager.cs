@@ -41,7 +41,7 @@ namespace KitLugia.Core
                 .Select(s =>
                 {
                     try { return System.IO.Path.GetFileNameWithoutExtension(s.FullCommand?.Trim('"') ?? s.Name); }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); return s.Name; }
+                    catch { return s.Name; }
                 })
                 .Where(n => !string.IsNullOrWhiteSpace(n))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -107,7 +107,7 @@ namespace KitLugia.Core
 
                 Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
     }
 }

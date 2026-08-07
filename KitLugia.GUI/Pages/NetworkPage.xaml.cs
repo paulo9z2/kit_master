@@ -62,11 +62,11 @@ namespace KitLugia.GUI.Pages
         private void StartRefreshTimers()
         {
             _refreshTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
-            _refreshTimer.Tick += async (s, e) => { try { await RefreshAdapterStatus(); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); } };
+            _refreshTimer.Tick += async (s, e) => { try { await RefreshAdapterStatus(); } catch { } };
             _refreshTimer.Start();
 
             _dnsTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(10) };
-            _dnsTimer.Tick += async (s, e) => { try { await RefreshDnsStatus(); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); } };
+            _dnsTimer.Tick += async (s, e) => { try { await RefreshDnsStatus(); } catch { } };
             _dnsTimer.Start();
         }
 
@@ -83,7 +83,7 @@ namespace KitLugia.GUI.Pages
                 else
                     TxtRefreshStatus.Foreground = _colorDefault;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         private async Task RefreshDnsStatus()
@@ -95,7 +95,7 @@ namespace KitLugia.GUI.Pages
                 var dnsInfo = await Task.Run(() => Toolbox.GetActiveDnsInfo());
                 await Dispatcher.InvokeAsync(() => UpdateDnsUi(dnsInfo.Provider, dnsInfo.DnsIp));
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             finally { _isLoading = false; }
         }
 
@@ -260,7 +260,7 @@ namespace KitLugia.GUI.Pages
                     UpdateLabel(StatusTcpRegistry, tcpRegistry, "Ativo", "Padr\u00e3o");
                 });
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         private void UpdateLabel(TextBlock label, bool isActive, string activeText, string defaultText)
@@ -313,7 +313,7 @@ namespace KitLugia.GUI.Pages
                 var dnsInfo = await Task.Run(() => Toolbox.GetActiveDnsInfo());
                 await Dispatcher.InvokeAsync(() => UpdateDnsUi(dnsInfo.Provider, dnsInfo.DnsIp));
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         private void UpdateDnsUi(string provider, string ip)

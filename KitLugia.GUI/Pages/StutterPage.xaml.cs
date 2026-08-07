@@ -316,7 +316,7 @@ namespace KitLugia.GUI.Pages
                     ShowToast(enable ? "GameBoost ativado" : "GameBoost desativado");
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         private static string AnalisarTeste(TestPhase baseline, TestPhase semGb, TestPhase restaurado)

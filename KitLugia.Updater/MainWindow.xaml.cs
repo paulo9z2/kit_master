@@ -79,7 +79,7 @@ public partial class MainWindow : Window
                         mainProcess.WaitForExit(5000);
                     }
                 }
-                catch { Logger.LogWarning("MainWindow", "Exception suppressed"); }
+                catch { }
             });
             SetStepDone(1, true);
             await Task.Delay(500);
@@ -107,8 +107,8 @@ public partial class MainWindow : Window
             AddStep("🧹", "Limpando temporários...", false);
             await Task.Run(() =>
             {
-                try { Directory.Delete(extractDir, true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
-                try { File.Delete(zipPath); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { Directory.Delete(extractDir, true); } catch { }
+                try { File.Delete(zipPath); } catch { }
             });
             SetStepDone(4, true);
 
@@ -249,7 +249,7 @@ public partial class MainWindow : Window
             if (File.Exists(exePath))
                 return FileVersionInfo.GetVersionInfo(exePath).FileVersion ?? "0.0.0.0";
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         return "0.0.0.0";
     }
 
@@ -259,7 +259,7 @@ public partial class MainWindow : Window
         {
             File.AppendAllText(logPath, $"[{DateTime.Now:HH:mm:ss}] {message}{Environment.NewLine}");
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
     }
 }
 

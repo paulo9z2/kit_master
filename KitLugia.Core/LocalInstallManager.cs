@@ -114,7 +114,7 @@ namespace KitLugia.Core
                     long freeSpaceMB = drive.AvailableFreeSpace / (1024 * 1024);
                     return (true, freeSpaceMB);
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); return (false, 0); }
+                catch { return (false, 0); }
             });
         }
 

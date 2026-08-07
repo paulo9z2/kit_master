@@ -149,7 +149,7 @@ namespace KitLugia.GUI.Pages
 
                 return null;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return null; }
+            catch { return null; }
         }
 
         private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e)

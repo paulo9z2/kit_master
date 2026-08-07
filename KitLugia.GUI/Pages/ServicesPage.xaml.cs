@@ -134,7 +134,7 @@ namespace KitLugia.GUI.Pages
                 }
                 ApplyStartupFilter();
             }
-            catch { Logger.LogWarning("ServicesPage", "Exception suppressed"); }
+            catch { }
             finally
             {
                 StartupLoadingOverlay.Visibility = Visibility.Collapsed;
@@ -1093,7 +1093,7 @@ namespace KitLugia.GUI.Pages
                 _allServices = services;
                 ApplyServiceFilter();
             }
-            catch { Logger.LogWarning("ServicesPage", "Exception suppressed"); }
+            catch { }
         }
 
         private async Task LoadServices() => await LoadServices(_cts?.Token ?? CancellationToken.None);

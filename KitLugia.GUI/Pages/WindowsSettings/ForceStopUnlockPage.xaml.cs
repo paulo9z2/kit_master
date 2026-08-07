@@ -47,7 +47,7 @@ namespace KitLugia.GUI.Pages.WindowsSettings
                     });
                 });
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             finally { _isLoading = false; }
         }
 
@@ -74,7 +74,7 @@ namespace KitLugia.GUI.Pages.WindowsSettings
 
                 await RefreshStatus();
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             finally { _isLoading = false; }
         }
 

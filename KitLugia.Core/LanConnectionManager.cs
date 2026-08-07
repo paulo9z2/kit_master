@@ -234,13 +234,16 @@ public sealed class LanConnectionManager : IDisposable
                 {
                     if (int.TryParse(parts[4], out int pid) && pid > 0)
                     {
-                        var process = Process.GetProcessById(pid);
-                        return (process.ProcessName, pid);
+                        if (ProcessHelper.TryGetProcessById(pid, out var process))
+                        {
+                            using var procRef = process;
+                            return (process.ProcessName, pid);
+                        }
                     }
                 }
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
         
         return (string.Empty, 0);
     }

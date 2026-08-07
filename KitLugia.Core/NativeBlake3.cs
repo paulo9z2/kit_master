@@ -49,7 +49,7 @@ namespace KitLugia.Core
                 var hash = System.Security.Cryptography.SHA256.HashData(stream);
                 return System.Convert.ToHexStringLower(hash);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return null; }
+            catch { return null; }
         }
 
         public static string HashBytes(byte[] data)
@@ -73,7 +73,7 @@ namespace KitLugia.Core
                 var hash = System.Security.Cryptography.SHA256.HashData(data);
                 return System.Convert.ToHexStringLower(hash);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return null; }
+            catch { return null; }
         }
     }
 }

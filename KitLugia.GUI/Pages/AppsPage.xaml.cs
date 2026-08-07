@@ -386,6 +386,9 @@ namespace KitLugia.GUI.Pages
                     var preFileSet = new HashSet<string>(preFiles.Select(e => e.Path), StringComparer.OrdinalIgnoreCase);
                     var preRegSet = new HashSet<string>(preReg.Select(e => e.Path), StringComparer.OrdinalIgnoreCase);
 
+                    // Revo-style ADCU/ADAU markers: record app data folders BEFORE removal
+                    DeepUninstallerSettings.RecordAppDataMarkers(app.DisplayName, "");
+
                     string baseName = app.PackageName.Split('_')[0];
                     string pkgFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Packages", baseName);
                     if (Directory.Exists(pkgFolder))
@@ -590,6 +593,8 @@ namespace KitLugia.GUI.Pages
                         var (preFiles, preReg) = await Task.Run(() => DeepUninstaller.ScanLeftovers(app.DisplayName, ""));
                         var preFileSet = new HashSet<string>(preFiles.Select(f => f.Path), StringComparer.OrdinalIgnoreCase);
                         var preRegSet = new HashSet<string>(preReg.Select(r => r.Path), StringComparer.OrdinalIgnoreCase);
+                        // Revo-style ADCU/ADAU markers: record app data folders BEFORE removal
+                        DeepUninstallerSettings.RecordAppDataMarkers(app.DisplayName, "");
                         string baseName = app.PackageName.Split('_')[0];
                         string pkgFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Packages", baseName);
                         if (Directory.Exists(pkgFolder))
@@ -832,7 +837,7 @@ namespace KitLugia.GUI.Pages
 
                 return null;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return null; }
+            catch { return null; }
         }
 
         private void TxtSearchPrograms_TextChanged(object sender, TextChangedEventArgs e)
@@ -2065,7 +2070,7 @@ namespace KitLugia.GUI.Pages
             bool ok = BrowserExtensionManager.ImportExtensions(dlg.SelectedPath, target);
             if (ok)
             {
-                try { BrowserExtensionManager.RegisterExtensionsViaCdpPipe(target); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { BrowserExtensionManager.RegisterExtensionsViaCdpPipe(target); } catch { }
             }
             MessageBox.Show(ok
                 ? $"Extensões importadas para {target} com sucesso!"
@@ -2135,7 +2140,7 @@ namespace KitLugia.GUI.Pages
                 if (Directory.Exists(ext.SourcePath))
                     Directory.Delete(ext.SourcePath, true);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             var current = ExtensionsList.ItemsSource as IList<ExtensionInfo>;
             if (current != null)

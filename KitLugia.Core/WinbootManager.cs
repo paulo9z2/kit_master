@@ -68,7 +68,7 @@ namespace KitLugia.Core
                 // Método simples e confiável via bcdedit ou presença de winload.efi
                 return File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "System32", "winload.efi"));
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+            catch { return false; }
         }
 
         /// <summary>
@@ -808,7 +808,7 @@ namespace KitLugia.Core
                 Directory.CreateDirectory(logDir);
                 File.AppendAllText(Path.Combine(logDir, "Winboot.log"), logLine + Environment.NewLine);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         /// <summary>
@@ -1411,7 +1411,7 @@ namespace KitLugia.Core
             {
                 if (await Task.WhenAny(readTask, Task.Delay(timeoutMs)).ConfigureAwait(false) != readTask)
                 {
-                    try { proc.Kill(entireProcessTree: true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    try { proc.Kill(entireProcessTree: true); } catch { }
                     Log($"TIMEOUT: Processo '{filename} {args}' excedeu {timeoutMs}ms e foi encerrado.");
                     return (-1, "TIMEOUT");
                 }
@@ -2053,7 +2053,7 @@ namespace KitLugia.Core
                                     Log("✅ .NET Runtime baixado com sucesso e salvo em Resources!");
 
                                     // Limpa arquivo temporário
-                                    try { File.Delete(tempDownloadPath); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                                    try { File.Delete(tempDownloadPath); } catch { }
                                 }
                                 catch (Exception ex)
                                 {
@@ -2923,7 +2923,7 @@ menuentry '🪟 Windows Setup / Boot Manager' --class windows {
                 try {
                     await RunProcessCaptured("sc", "config vds start= demand");
                     await RunProcessCaptured("net", "start vds");
-                } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                } catch { }
 
                 try
                 {
@@ -3085,7 +3085,7 @@ menuentry '🪟 Windows Setup / Boot Manager' --class windows {
                     await RunProcessCaptured("sc", "config vds start= demand");
                     await RunProcessCaptured("net", "start vds");
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
 
                 // 1. AUTO-CLEANUP: Detectar e remover Winboot existente (evita boot duplicado)
                 Log("Verificando se já existe uma partição Winboot anterior...");
@@ -3203,7 +3203,7 @@ menuentry '🪟 Windows Setup / Boot Manager' --class windows {
                                 }
                             }
                         }
-                    } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    } catch { }
                 }
                 Log($"Tipo de partição consolidado: {(isGpt ? "GPT (UEFI)" : "MBR (Legacy BIOS)")}");
 
@@ -3235,7 +3235,7 @@ menuentry '🪟 Windows Setup / Boot Manager' --class windows {
                     if (targetDisk != null && (targetDisk.Interface.Contains("USB", StringComparison.OrdinalIgnoreCase) || targetDisk.Interface.Contains("Removable", StringComparison.OrdinalIgnoreCase))) {
                         isRemovable = true;
                     }
-                } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                } catch { }
 
                 if (!isGpt && !isSystemEfi && isRemovable)
                 {
@@ -3330,7 +3330,7 @@ menuentry '🪟 Windows Setup / Boot Manager' --class windows {
                                                   .FirstOrDefault(p => p.Label.Equals(WINBOOT_LABEL, StringComparison.OrdinalIgnoreCase));
                     hasLetter = targetPartition != null && !string.IsNullOrEmpty(targetPartition.DriveLetter);
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
 
                 if (!hasLetter)
                 {
@@ -3460,7 +3460,7 @@ menuentry '🪟 Windows Setup / Boot Manager' --class windows {
 
                 return xml;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return xml; }
+            catch { return xml; }
         }
 
         public class AutomationProfile
@@ -3596,7 +3596,7 @@ menuentry '🪟 Windows Setup / Boot Manager' --class windows {
                     size += GetDirectorySize(dir);
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return size;
         }
 
@@ -4431,7 +4431,7 @@ menuentry '🪟 Windows Setup / Boot Manager' --class windows {
             var readTask = process.StandardOutput.ReadToEndAsync();
             if (await Task.WhenAny(readTask, Task.Delay(30000)) != readTask)
             {
-                try { process.Kill(); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { process.Kill(); } catch { }
                 return "";
             }
             return await readTask;
@@ -4444,7 +4444,7 @@ menuentry '🪟 Windows Setup / Boot Manager' --class windows {
                 using var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
                 return key?.GetValue("EditionID")?.ToString() ?? "Professional";
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return "Professional"; }
+            catch { return "Professional"; }
         }
 
         public static void SetEditionId(string editionId)
@@ -4587,7 +4587,7 @@ menuentry '🪟 Windows Setup / Boot Manager' --class windows {
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return null;
         }
 
@@ -4767,7 +4767,7 @@ menuentry '🪟 Windows Setup / Boot Manager' --class windows {
                     if (!Directory.Exists(dir)) continue;
                     foreach (var file in Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories))
                     {
-                        try { var fi = new FileInfo(file); tempFreed += fi.Length; File.Delete(file); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { var fi = new FileInfo(file); tempFreed += fi.Length; File.Delete(file); } catch { }
                     }
                 }
                 long tempGB = tempFreed / (1024L * 1024 * 1024);
@@ -4791,7 +4791,7 @@ menuentry '🪟 Windows Setup / Boot Manager' --class windows {
                     long wuFreed = 0;
                     foreach (var file in Directory.EnumerateFiles(wuCache, "*", SearchOption.AllDirectories))
                     {
-                        try { var fi = new FileInfo(file); wuFreed += fi.Length; File.Delete(file); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { var fi = new FileInfo(file); wuFreed += fi.Length; File.Delete(file); } catch { }
                     }
                     long wuGB = wuFreed / (1024L * 1024 * 1024);
                     freedGB += wuGB;
@@ -4827,7 +4827,7 @@ menuentry '🪟 Windows Setup / Boot Manager' --class windows {
                 log.Add($"📊 Espaço livre após otimização: {freeAfterGB} GB");
                 progress?.Invoke($"Otimização concluída. Espaço livre: {freeAfterGB} GB");
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return (freedGB, log);
         }
@@ -5866,13 +5866,13 @@ echo Execute 'PREPARAR VALIDATION OS' novamente.
         public static bool IsWinpeReady()
         {
             try { return File.Exists(@"C:\KL_WINPE\boot.wim"); }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+            catch { return false; }
         }
 
         public static bool IsValidationOsReady()
         {
             try { return File.Exists(VALIDATION_WIM_PATH); }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+            catch { return false; }
         }
 
         /// <summary>
@@ -5952,7 +5952,7 @@ echo Execute 'PREPARAR VALIDATION OS' novamente.
                     var cfgFiles = Directory.GetFiles(cfgDir, "*.*");
                     foreach (var f in cfgFiles)
                     {
-                        try { File.Delete(f); Log($"Deletado: {f}"); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { File.Delete(f); Log($"Deletado: {f}"); } catch { }
                     }
                 }
             }
@@ -5991,7 +5991,7 @@ echo Execute 'PREPARAR VALIDATION OS' novamente.
             long knownSize = 0;
 
             // 0: DriveInfo → tamanho total da partição
-            try { knownSize = new DriveInfo($"{dl}\\").TotalSize; Log($"GetDiskPartitionInfo: DriveInfo size={knownSize}"); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            try { knownSize = new DriveInfo($"{dl}\\").TotalSize; Log($"GetDiskPartitionInfo: DriveInfo size={knownSize}"); } catch { }
 
             // 1: WMI → método primário para DISK_N/PART_N + metadados
             // Usa ASSOCIATORS OF: Win32_LogicalDisk → Win32_DiskPartition (funciona mesmo se o volume já tem letra C:)
@@ -6093,9 +6093,9 @@ echo Execute 'PREPARAR VALIDATION OS' novamente.
                 { RedirectStandardOutput = true, UseShellExecute = false, CreateNoWindow = true };
                 using var proc = System.Diagnostics.Process.Start(psi);
                 if (proc != null) { proc.StandardOutput.ReadToEnd(); proc.WaitForExit(15000); }
-                try { System.IO.File.Delete(path); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { System.IO.File.Delete(path); } catch { }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         private static async Task<(int disk, int part, long offset, long size, string serial, string label)> GetDiskPartitionInfoAsync(string driveLetter)
@@ -6266,7 +6266,7 @@ echo Execute 'PREPARAR VALIDATION OS' novamente.
                         };
                         System.Diagnostics.Process.Start(psi);
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 });
 
                 return (true, $"{(useValOs ? "Validation OS" : "WinPE")} configurado. DISK_N={disk} PART_N={part} OFFSET={offset} SHRINK={shrinkMB}MB. O sistema será reiniciado em 10s para executar o shrink.");
@@ -6334,11 +6334,11 @@ echo Execute 'PREPARAR VALIDATION OS' novamente.
                     if (di.IsReady && di.DriveType == DriveType.Fixed)
                     {
                         string marker = Path.Combine(di.RootDirectory.FullName, ShrinkMarkerFile);
-                        try { if (File.Exists(marker)) { File.Delete(marker); Log($"Marcador removido: {marker}"); } } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { if (File.Exists(marker)) { File.Delete(marker); Log($"Marcador removido: {marker}"); } } catch { }
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         /// <summary>
@@ -6420,12 +6420,12 @@ echo Execute 'PREPARAR VALIDATION OS' novamente.
         /// </summary>
         public static void ClearWinpeLogs()
         {
-            try { if (File.Exists(WinpePersistentLogPath)) File.Delete(WinpePersistentLogPath); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            try { if (File.Exists(WinpePersistentLogPath)) File.Delete(WinpePersistentLogPath); } catch { }
             try
             {
                 string fallbackPath = Path.Combine(Path.GetPathRoot(Environment.SystemDirectory) ?? @"C:\", "KitLugia_WinPE_Log.txt");
                 if (File.Exists(fallbackPath)) File.Delete(fallbackPath);
-            } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            } catch { }
             try
             {
                 foreach (var drive in DriveInfo.GetDrives())
@@ -6439,7 +6439,7 @@ echo Execute 'PREPARAR VALIDATION OS' novamente.
                     catch { /* volume inacessivel ou protegido */ }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         /// <summary>
@@ -6731,7 +6731,7 @@ echo Execute 'PREPARAR VALIDATION OS' novamente.
                     $"CONFIG_DIR=KL_REINSTALL");
 
                 // Log persistente: apaga execucao anterior para comecar limpo
-                try { if (File.Exists(Path.Combine(targetRoot, ReinstallLogFile))) File.Delete(Path.Combine(targetRoot, ReinstallLogFile)); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { if (File.Exists(Path.Combine(targetRoot, ReinstallLogFile))) File.Delete(Path.Combine(targetRoot, ReinstallLogFile)); } catch { }
 
                 // 6. Entrada BCD unica (GUID fixo) + bootsequence one-time
                 try
@@ -6781,7 +6781,7 @@ echo Execute 'PREPARAR VALIDATION OS' novamente.
                         };
                         System.Diagnostics.Process.Start(psi);
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 });
 
                 Log($"Reinstall/Preserve agendado. DISK={tDisk} PART={tPart} ESP={eDisk}/{ePart} GUID={ReinstallBcdGuid}");

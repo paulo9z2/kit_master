@@ -230,7 +230,7 @@ exit
                 {
                     if (!proc.WaitForExit(timeoutMs))
                     {
-                        try { proc.Kill(entireProcessTree: true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        try { proc.Kill(entireProcessTree: true); } catch { }
                         return (-1, "TIMEOUT: Processo excedeu o limite de tempo.");
                     }
                 }

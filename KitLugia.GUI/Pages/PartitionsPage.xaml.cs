@@ -222,7 +222,7 @@ namespace KitLugia.GUI.Pages
                 var color = (Color)ColorConverter.ConvertFromString(hex);
                 double lum = (0.299 * color.R + 0.587 * color.G + 0.114 * color.B) / 255;
                 return lum < 0.5;
-            } catch { Logger.LogWarning("Unknown", "Exception suppressed"); return true; }
+            } catch { return true; }
         }
 
         private void GridPartitions_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -194,9 +194,9 @@ namespace KitLugia.Core
                             BusType = descriptor.BusType.ToString()
                         });
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); continue; }
+                    catch { continue; }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); continue; }
+                catch { continue; }
             }
 
             return result.OrderBy(r => r.DriveLetter).ToList();
@@ -222,7 +222,7 @@ namespace KitLugia.Core
                             return volume;
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); continue; }
+                catch { continue; }
             }
 
             return "";
@@ -284,7 +284,7 @@ exit";
                 var (exitCode, output, error) = await Task.Run(() =>
                     ProcessRunner.Run("diskpart", $"/s \"{scriptPath}\"", 60000));
 
-                try { File.Delete(scriptPath); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { File.Delete(scriptPath); } catch { }
 
                 return exitCode == 0
                     ? (true, $"Drive {driveLetter} formatado como {options.FileSystem}.")
@@ -345,7 +345,7 @@ exit";
                     await WinbootManager.DismountIso(isoPath);
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return "Other"; }
+            catch { return "Other"; }
         }
 
         /// <summary>
@@ -395,7 +395,7 @@ exit";
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             // 2. Caminhos comuns do Windows ADK
             string[] adkCandidates =
@@ -508,16 +508,16 @@ exit";
                     await Task.Run(() =>
                         ProcessRunner.Run("bcdboot", $@"{efiLetter}:\Windows /s {efiLetter}: /f UEFI", 30000));
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
 
                 progress?.Report((100.0, "Concluído!"));
                 return (true, $"Dual-boot criado: FAT32(EFI) + NTFS(Dados) com {isoPaths.Count} ISO(s).");
             }
             finally
             {
-                try { File.Delete(scriptPath); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
-                try { SystemUtils.RunExternalProcess("diskpart", $"/c \"select volume {efiLetter}\" & \"remove letter={efiLetter}\"", true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
-                try { SystemUtils.RunExternalProcess("diskpart", $"/c \"select volume {dataLetter}\" & \"remove letter={dataLetter}\"", true); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { File.Delete(scriptPath); } catch { }
+                try { SystemUtils.RunExternalProcess("diskpart", $"/c \"select volume {efiLetter}\" & \"remove letter={efiLetter}\"", true); } catch { }
+                try { SystemUtils.RunExternalProcess("diskpart", $"/c \"select volume {dataLetter}\" & \"remove letter={dataLetter}\"", true); } catch { }
             }
         }
 
@@ -531,7 +531,7 @@ exit";
                 return await Task.Run(() => NativeSha256.ComputeHash(filePath) ?? "")
                     .ConfigureAwait(false);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return ""; }
+            catch { return ""; }
         }
 
         /// <summary>

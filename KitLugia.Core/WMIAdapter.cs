@@ -211,7 +211,7 @@ public sealed class WMIAdapter : IDisposable
                     return candidate;
             }
         }
-        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+        catch { }
 
         var possiblePaths = new[]
         {

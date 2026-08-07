@@ -78,7 +78,7 @@ namespace KitLugia.GUI
             }
             finally
             {
-                try { _mutex?.ReleaseMutex(); _mutex?.Dispose(); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { _mutex?.ReleaseMutex(); _mutex?.Dispose(); } catch { }
             }
         }
 
@@ -103,9 +103,9 @@ namespace KitLugia.GUI
                 {
                         EventWaitHandle.OpenExisting("Global\\KitLugia_ShowWindow")?.Set();
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
     }
 }

@@ -142,7 +142,7 @@ namespace KitLugia.Core
 
                         apps.Add(key, new StartupAppDetails(name, commandLine, folder, status));
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
             };
 
@@ -197,11 +197,11 @@ namespace KitLugia.Core
                             if (apps.ContainsKey(key)) continue;
                             apps.Add(key, new StartupAppDetails($"{name} [Desabilitado]", commandLine, disabledFolder, StartupStatus.Disabled));
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             string[] regPaths = {
                 @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
                 @"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce",
@@ -245,7 +245,7 @@ namespace KitLugia.Core
                         }
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             // --- 3. PROCESSAR TAREFAS DO AGENDADOR (KITLUGIA) ---
@@ -331,7 +331,7 @@ namespace KitLugia.Core
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             // --- 4. WMI Win32_StartupCommand (captura apps de todas as origens, SEMPRE) ---
             try
@@ -362,10 +362,10 @@ namespace KitLugia.Core
                         if (!apps.ContainsKey(key))
                             apps[key] = new StartupAppDetails(name, command, $"Startup: {location ?? "WMI"}", StartupStatus.Enabled);
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             // --- 5. HKCU\...\Windows\Load e Windows\Run (apps antigos) ---
             try
@@ -384,7 +384,7 @@ namespace KitLugia.Core
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             // --- 6. TAREFAS EXTERNAS DO AGENDADOR (não-KitLUGIA) ---
             if (!fast)
@@ -400,7 +400,7 @@ namespace KitLugia.Core
                             apps[key] = task;
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
 
                 // --- 7. UWP / Modern Store Apps (apenas Task Scheduler) ---
                 try
@@ -414,7 +414,7 @@ namespace KitLugia.Core
                             apps[key] = app;
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             // Remove WMI duplicates that have incomplete/broken paths
@@ -455,7 +455,7 @@ namespace KitLugia.Core
                         }
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             };
             processRunOnceEx(Registry.LocalMachine, "HKLM");
             processRunOnceEx(Registry.CurrentUser, "HKCU");
@@ -484,11 +484,11 @@ namespace KitLugia.Core
                                 apps[k] = new StartupAppDetails($"ActiveSetup: {subName}", stubPath, @"HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components", status);
                             }
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return apps.Values.OrderBy(a => a.Name).ToList();
         }
@@ -527,7 +527,7 @@ namespace KitLugia.Core
                                         var r = FindTask(sf);
                                         if (r != null) return r;
                                     }
-                                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                                    catch { }
                                 }
                                 return null;
                             }
@@ -697,7 +697,7 @@ namespace KitLugia.Core
                     // Atualiza localização para a pasta de startup correta
                     resolvedFolderPath = startupFolder;
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             // Ação A: Desabilitar via StartupApproved (RUN)
@@ -724,7 +724,7 @@ namespace KitLugia.Core
                             // Also try appName.lnk variant
                             if (!fallbackName.EndsWith(".lnk", StringComparison.OrdinalIgnoreCase))
                             {
-                                try { key.SetValue(appName + ".lnk", valueToSet, RegistryValueKind.Binary); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                                try { key.SetValue(appName + ".lnk", valueToSet, RegistryValueKind.Binary); } catch { }
                             }
                         }
                     }
@@ -740,12 +740,12 @@ namespace KitLugia.Core
                                 lmKey.SetValue(resolvedValueName, valueToSet, RegistryValueKind.Binary);
                             }
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
                     }
 
                     anyActionTaken = true;
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
 
                 // Ação A2: Salvar valor Run e deletá-lo ao desabilitar (apps como Vencord/Vesktop ignoram StartupApproved)
                 if (!enable && resolvedRegPath != null && !string.IsNullOrEmpty(resolvedValueName))
@@ -772,7 +772,7 @@ namespace KitLugia.Core
                             }
                         }
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
                 else if (enable && resolvedRegPath != null && !string.IsNullOrEmpty(resolvedValueName))
                 {
@@ -801,7 +801,7 @@ namespace KitLugia.Core
                             }
                         }
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
             }
 
@@ -867,7 +867,7 @@ namespace KitLugia.Core
                                 }
                             }
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
                     }
 
                     anyActionTaken = true;
@@ -920,7 +920,7 @@ namespace KitLugia.Core
                         anyActionTaken = true;
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             // Ação E: Se mesmo assim não funcionou, varredura completa de backup
@@ -933,7 +933,7 @@ namespace KitLugia.Core
                     actionsTaken.Add("Varredura completa (brute-force)");
                     anyActionTaken = true;
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             if (!anyActionTaken)
@@ -973,7 +973,7 @@ namespace KitLugia.Core
                         }
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             // Write StartupApproved\Run as disabled
@@ -984,7 +984,7 @@ namespace KitLugia.Core
                     ?? Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run");
                 runApproved?.SetValue(appName, disabledValue, RegistryValueKind.Binary);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             // Write StartupApproved\StartupFolder as disabled
             try
@@ -994,7 +994,7 @@ namespace KitLugia.Core
                     ?? Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\StartupFolder");
                 folderApproved?.SetValue(appName + ".lnk", disabledValue, RegistryValueKind.Binary);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         public static (bool Success, string Message) RemoveStartupItem(string appName)
@@ -1036,7 +1036,7 @@ namespace KitLugia.Core
                                     var r = FindTask(sf);
                                     if (r != null) return r;
                                 }
-                                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                                catch { }
                             }
                             return null;
                         }
@@ -1143,7 +1143,7 @@ namespace KitLugia.Core
                                     ts.RootFolder.DeleteTask(taskName);
                             }
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
 
                         InvalidateCache();
                         CleanStartupApproved(appName);
@@ -1214,14 +1214,14 @@ namespace KitLugia.Core
 
                         foreach (var subFolder in folder.SubFolders)
                         {
-                            try { scanFolder(subFolder); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                            try { scanFolder(subFolder); } catch { }
                         }
                     };
 
                     scanFolder(ts.RootFolder);
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return apps.OrderBy(a => a.Name).ToList();
         }
@@ -1269,19 +1269,19 @@ namespace KitLugia.Core
 
                                 apps.Add(new StartupAppDetails(appId, fullCmd, loc, StartupStatus.Enabled));
                             }
-                            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                            catch { }
                         }
 
                         foreach (var sf in folder.SubFolders)
                         {
-                            try { scanUwpFolder(sf); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                            try { scanUwpFolder(sf); } catch { }
                         }
                     };
 
                     scanUwpFolder(ts.RootFolder);
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             // --- 3. UWP StartupTask API registries (o que o Task Manager mostra) ---
             // Windows 10/11 armazena o estado das tarefas de inicialização UWP em:
@@ -1344,14 +1344,14 @@ namespace KitLugia.Core
                                         "UWP (Settings)",
                                         isEnabled ? StartupStatus.Enabled : StartupStatus.Disabled));
                                 }
-                                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                                catch { }
                             }
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return apps.OrderBy(a => a.Name).ToList();
         }
@@ -1375,7 +1375,7 @@ namespace KitLugia.Core
                         return dn;
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             // Fallback: limpa o AUMID para algo legível
             try
@@ -1399,7 +1399,7 @@ namespace KitLugia.Core
 
                 return cleaned.Length > 3 ? cleaned : aumid;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return aumid; }
+            catch { return aumid; }
         }
 
         private static string ResolvePackageFamilyName(string familyName)
@@ -1415,7 +1415,7 @@ namespace KitLugia.Core
                         return dn;
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             // Fallback: limpa o family name
             try
@@ -1432,7 +1432,7 @@ namespace KitLugia.Core
 
                 return cleaned.Length > 3 ? cleaned : familyName;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return familyName; }
+            catch { return familyName; }
         }
 
         // --- Resolução de apps empacotados (UWP/MSIX) para o "Abrir Local do Arquivo" ---
@@ -1550,7 +1550,7 @@ namespace KitLugia.Core
                         if (exe != null) return exe;
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             return null;
@@ -1570,7 +1570,7 @@ namespace KitLugia.Core
                 if (File.Exists(full)) return full;
                 return null;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return null; }
+            catch { return null; }
         }
 
         private static void AddUWPStartupTasksFromRegistry(RegistryKey hive, string subKeyPath, string location, List<StartupAppDetails> apps)
@@ -1608,10 +1608,10 @@ namespace KitLugia.Core
                             location,
                             isEnabled ? StartupStatus.Enabled : StartupStatus.Disabled));
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         private static (bool Success, string Message) CreateUWPFallbackTask(string appName, string aumid, bool enable, bool silentMode)
@@ -1633,7 +1633,7 @@ namespace KitLugia.Core
                         }
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
                 return (true, silentMode ? "" : $"App UWP '{appName}' desabilitado (sem tarefa fallback).");
             }
 
@@ -1738,8 +1738,8 @@ namespace KitLugia.Core
                     ts.RootFolder.RegisterTaskDefinition(taskName, td);
                 }
 
-                try { using var rk = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true); rk?.DeleteValue(appName, false); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
-                try { using var rk = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true); rk?.DeleteValue(appName, false); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                try { using var rk = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true); rk?.DeleteValue(appName, false); } catch { }
+                try { using var rk = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true); rk?.DeleteValue(appName, false); } catch { }
 
                 string typeMsg = elevated ? "ADMIN" : "NORMAL";
                 string delayMsg = forceLongDelay || (!elevated) ? "+ ATRASO" : "";
@@ -1781,7 +1781,7 @@ namespace KitLugia.Core
                 using var key = Registry.CurrentUser.OpenSubKey(KitLugiaStartupKey);
                 return key?.GetValue(appName + "__Admin")?.ToString() != "0";
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return true; }
+            catch { return true; }
         }
 
         public static void SetBootTrayAdminFlag(string appName, bool runAsAdmin)
@@ -1809,7 +1809,7 @@ namespace KitLugia.Core
                 }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         public static (bool Success, string Message) DelegateToKitLugia(string appName, bool runAsAdmin = true)
@@ -1830,7 +1830,7 @@ namespace KitLugia.Core
                     using var approved = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run", true);
                     approved?.SetValue(appName, disabledValue, RegistryValueKind.Binary);
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
 
                 // 2. Add to KitLugia list
                 using var key = Registry.CurrentUser.CreateSubKey(KitLugiaStartupKey);
@@ -1931,7 +1931,7 @@ namespace KitLugia.Core
                 td.Actions.Add(new ExecAction(path, args ?? "", Path.GetDirectoryName(path) ?? ""));
                 ts.RootFolder.RegisterTaskDefinition(taskName, td);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         public static void UnregisterNonAdminTask(string appName)
@@ -1943,7 +1943,7 @@ namespace KitLugia.Core
                 if (ts.GetTask(taskName) != null)
                     ts.RootFolder.DeleteTask(taskName, false);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         public static void RunNonAdminTask(string appName)
@@ -1954,7 +1954,7 @@ namespace KitLugia.Core
                 using var ts = new TaskService();
                 ts.GetTask(taskName)?.Run();
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         #endregion
@@ -2006,11 +2006,11 @@ namespace KitLugia.Core
                                 RunNonAdminTask(name);
                             }
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
                     }){ IsBackground = true, Priority = System.Threading.ThreadPriority.AboveNormal }.Start();
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         public static (bool Success, string Message) UpdateStartupArgs(string appName, string newFullCommand)
@@ -2090,7 +2090,7 @@ namespace KitLugia.Core
                     key.SetValue(app.Name + "__Timestamp", timestamp);
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         public static List<string> GetRemovedApps()
@@ -2109,7 +2109,7 @@ namespace KitLugia.Core
                 }
                 list = names.OrderBy(n => n).ToList();
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return list;
         }
 
@@ -2120,7 +2120,7 @@ namespace KitLugia.Core
                 using var key = Registry.CurrentUser.OpenSubKey(RemovedAppsBackupKey);
                 return key?.GetValue(appName + "__Command")?.ToString() ?? "";
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return ""; }
+            catch { return ""; }
         }
 
         public static string GetRemovedAppLocation(string appName)
@@ -2130,7 +2130,7 @@ namespace KitLugia.Core
                 using var key = Registry.CurrentUser.OpenSubKey(RemovedAppsBackupKey);
                 return key?.GetValue(appName + "__Location")?.ToString() ?? "";
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return ""; }
+            catch { return ""; }
         }
 
         public static (bool Success, string Message) RestoreRemovedItem(string appName)
@@ -2173,7 +2173,7 @@ namespace KitLugia.Core
                         key.DeleteValue(appName + "__Timestamp", false);
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
 
                 InvalidateCache();
                 return (true, $"'{appName}' restaurado para inicialização.");
@@ -2196,7 +2196,7 @@ namespace KitLugia.Core
                 shortcut.Save();
                 return true;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+            catch { return false; }
         }
 
         private static void CleanStartupApproved(string appName)
@@ -2210,11 +2210,11 @@ namespace KitLugia.Core
                 };
                 foreach (var path in approvedPaths)
                 {
-                    try { using var key = Registry.CurrentUser.OpenSubKey(path, true); key?.DeleteValue(appName, false); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
-                    try { using var key = Registry.LocalMachine.OpenSubKey(path, true); key?.DeleteValue(appName, false); } catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    try { using var key = Registry.CurrentUser.OpenSubKey(path, true); key?.DeleteValue(appName, false); } catch { }
+                    try { using var key = Registry.LocalMachine.OpenSubKey(path, true); key?.DeleteValue(appName, false); } catch { }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
 
         #region Helpers
@@ -2326,7 +2326,7 @@ namespace KitLugia.Core
                     return $"\"{target}\" {args}".Trim();
                 return $"\"{shortcutPath}\"";
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return $"\"{shortcutPath}\""; }
+            catch { return $"\"{shortcutPath}\""; }
         }
 
         private static HashSet<string> GetElevatedTaskExecutablePaths()
@@ -2348,7 +2348,7 @@ namespace KitLugia.Core
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return paths;
         }
 
@@ -2391,7 +2391,7 @@ namespace KitLugia.Core
                     if (!string.IsNullOrEmpty(vmApplet))
                         items.Add(new StartupAppDetails($"AppSetup ({regPath})", vmApplet, $"{regPath}\\AppSetup", StartupStatus.Enabled));
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             return items;
@@ -2435,7 +2435,7 @@ namespace KitLugia.Core
                             $"{regPath}\\AppInit_DLLs", StartupStatus.Enabled));
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             return items;
@@ -2481,14 +2481,14 @@ namespace KitLugia.Core
                                     continue;
                                 }
                             }
-                            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                            catch { }
 
                             items.Add(new StartupAppDetails($"BHO: {name}", clsid, bhoPath, StartupStatus.Enabled));
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             return items;
@@ -2535,7 +2535,7 @@ namespace KitLugia.Core
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return items;
         }
@@ -2557,7 +2557,7 @@ namespace KitLugia.Core
                             @"HKLM\SYSTEM\...\Session Manager\KnownDLLs", StartupStatus.Enabled));
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return items;
         }
@@ -2588,7 +2588,7 @@ namespace KitLugia.Core
                                     displayName = $"{friendlyName} ({val})";
                             }
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
 
                         items.Add(new StartupAppDetails($"SSODL: {name}",
                             displayName,
@@ -2597,7 +2597,7 @@ namespace KitLugia.Core
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return items;
         }
@@ -2634,13 +2634,13 @@ namespace KitLugia.Core
                                     displayName = $"{friendlyName} ({clsid})";
                             }
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
 
                         items.Add(new StartupAppDetails($"ShellExecHook: {displayName}", val,
                             regPath, StartupStatus.Enabled));
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             return items;
@@ -2696,16 +2696,16 @@ namespace KitLugia.Core
                                         displayName = $"{friendlyName} ({clsid})";
                                 }
                             }
-                            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                            catch { }
 
                             items.Add(new StartupAppDetails($"ContextMenu: {sub}",
                                 displayName,
                                 regPath, StartupStatus.Enabled));
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
                     }
                 }
-                catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                catch { }
             }
 
             return items;

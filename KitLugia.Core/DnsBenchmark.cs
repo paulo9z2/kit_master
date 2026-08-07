@@ -71,7 +71,7 @@ namespace KitLugia.Core
                 var reply = await client.SendPingAsync(IPAddress.Parse(ip), 3000);
                 return reply.Status == System.Net.NetworkInformation.IPStatus.Success ? reply.RoundtripTime : -1;
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return -1; }
+            catch { return -1; }
         }
     }
 }

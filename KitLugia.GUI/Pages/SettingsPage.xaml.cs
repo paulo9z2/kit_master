@@ -465,7 +465,7 @@ namespace KitLugia.GUI.Pages
                     return System.Text.Json.JsonSerializer.Deserialize<AppSettings>(json) ?? new AppSettings();
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return new AppSettings();
         }
 
@@ -480,7 +480,7 @@ namespace KitLugia.GUI.Pages
                 Directory.CreateDirectory(Path.GetDirectoryName(ConfigPath)!);
                 File.WriteAllText(ConfigPath, json);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
         }
     }
 

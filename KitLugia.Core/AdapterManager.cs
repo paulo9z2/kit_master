@@ -124,7 +124,7 @@ namespace KitLugia.Core
                                     connectionName = name;
                             }
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
 
                         var customMac = adapterKey.GetValue("NetworkAddress")?.ToString() ?? "";
                         var speed = adapterKey.GetValue("*Speed")?.ToString() ?? "";
@@ -139,7 +139,7 @@ namespace KitLugia.Core
                             if (!string.IsNullOrWhiteSpace(macResult) && macResult.Length >= 12)
                                 liveMac = macResult.Trim().ToUpper().Replace("-", "").Replace(":", "");
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
 
                         // Se falhou Get-NetAdapter, tenta registro NetworkAddress (custom)
                         // Se ambos falham, usa "00" como placeholder
@@ -153,7 +153,7 @@ namespace KitLugia.Core
                                 hidden: true);
                             isUp = statusResult.Trim().Equals("True", StringComparison.OrdinalIgnoreCase);
                         }
-                        catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                        catch { }
 
                         var permanentMac = GetPermanentMac(subKeyName, netCfgInstanceId, connectionName);
                         var (supportsSpoofing, _) = CheckNetworkAddressSupport(subKeyName);
@@ -171,10 +171,10 @@ namespace KitLugia.Core
                             SupportsSpoofing = supportsSpoofing
                         });
                     }
-                    catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+                    catch { }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return adapters;
         }
@@ -365,7 +365,7 @@ namespace KitLugia.Core
                 if (!string.IsNullOrWhiteSpace(macResult) && macResult.Length >= 12)
                     return macResult.Trim().ToUpper().Replace("-", "").Replace(":", "");
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return "";
         }
 
@@ -397,7 +397,7 @@ namespace KitLugia.Core
                 if (!string.IsNullOrWhiteSpace(psResult) && psResult.Length >= 12)
                     return psResult.Trim().ToUpper().Replace("-", "").Replace(":", "");
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             // Fonte 2: Registry NetworkSetup2 → Kernel → PermanentAddress
             try
@@ -412,7 +412,7 @@ namespace KitLugia.Core
                         return permAddr.ToUpper().Replace("-", "").Replace(":", "");
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             // Fonte 3: OriginalNetworkAddress (backup automático do Windows antes de aplicar spoof)
             try
@@ -427,7 +427,7 @@ namespace KitLugia.Core
                         return original.ToUpper().Replace("-", "").Replace(":", "");
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return "";
         }
@@ -445,7 +445,7 @@ namespace KitLugia.Core
                 using var paramsKey = localMachine.OpenSubKey(paramsPath);
                 return (paramsKey != null, paramsKey != null);
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return (false, false);
         }
 

@@ -233,7 +233,7 @@ namespace KitLugia.Core
                     }
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
 
             return GetPlaceholderReleases();
         }
@@ -287,7 +287,7 @@ namespace KitLugia.Core
                 if (version != null)
                     return $"{version.Major}.{version.Minor}.{version.Build}";
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); }
+            catch { }
             return "2.0.x";
         }
 

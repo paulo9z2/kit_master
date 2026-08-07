@@ -3039,7 +3039,7 @@ new() {
                     return value != null && value is int intValue && intValue == 1;
                 }
             }
-            catch { Logger.LogWarning("Unknown", "Exception suppressed"); return false; }
+            catch { return false; }
         }
 
         public static List<string> GetAppliedQuickToggles()
