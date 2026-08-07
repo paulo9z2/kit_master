@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 using KitLugia.Core;
+using KitLugia.Core.Plugins;
 using KitLugia.GUI.Controls;
 using KitLugia.GUI.Pages;
 using KitLugia.GUI.Pages.WindowsSettings;
@@ -157,6 +158,7 @@ namespace KitLugia.GUI
         ReinstallPreserve,
         WindowsUpdate,
         Theme,
+        Plugins,
     }
 
     public partial class MainWindow : Window, INotifyPropertyChanged
@@ -593,6 +595,18 @@ namespace KitLugia.GUI
 
             // --- TRAY ICON: Inicializa o Monitor de RAM ---
             _trayService = new TrayIconService();
+
+            // --- PLUGINS: Carrega DLLs da pasta Plugins no arranque do kit ---
+            PluginManager.Instance.SetLogger(Logger.Log);
+            try
+            {
+                PluginManager.Instance.LoadPlugins();
+                PluginManager.Instance.StartBackgroundPlugins();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"Plugins: falha no carregamento inicial: {ex.Message}");
+            }
             _trayService.OnOpenMainWindow += () =>
             {
                 Dispatcher.Invoke(() =>
@@ -1027,6 +1041,7 @@ namespace KitLugia.GUI
             ["🚀"] = PageType.GameBoost,
             ["🔬"] = PageType.Diagnostic,
             ["🎨"] = PageType.Theme,
+            ["🧩"] = PageType.Plugins,
         };
 
         private void NavButton_Click(object sender, RoutedEventArgs e)
@@ -1108,6 +1123,7 @@ namespace KitLugia.GUI
             else if (MainFrame.Content is UpdatePage) { }
             else if (MainFrame.Content is DiagnosticPage) { if (BtnDiagnostic != null) BtnDiagnostic.IsChecked = true; }
             else if (MainFrame.Content is ThemePage) { if (BtnTheme != null) BtnTheme.IsChecked = true; }
+            else if (MainFrame.Content is PluginsPage) { if (BtnPlugins != null) BtnPlugins.IsChecked = true; }
             else if (MainFrame.Content is WinTunePage) { }
             else if (MainFrame.Content is AllTweaksPage) { }
             else if (MainFrame.Content is StutterPage) { }
@@ -1131,6 +1147,7 @@ namespace KitLugia.GUI
             if (BtnTray != null) BtnTray.IsChecked = false;
             if (BtnDiagnostic != null) BtnDiagnostic.IsChecked = false;
             if (BtnTheme != null) BtnTheme.IsChecked = false;
+            if (BtnPlugins != null) BtnPlugins.IsChecked = false;
         }
 
         public void NavigateToPage(string? pageTag, object? senderButton = null)
@@ -1199,6 +1216,7 @@ namespace KitLugia.GUI
                 PageType.ReinstallPreserve => new ReinstallPreservePage(),
                 PageType.WindowsUpdate => new WindowsUpdatePage(),
                 PageType.Theme => new ThemePage(),
+                PageType.Plugins => new PluginsPage(),
                 _ => null
             };
 
@@ -2693,6 +2711,7 @@ namespace KitLugia.GUI
 
         protected override void OnClosed(EventArgs e)
         {
+            try { PluginManager.Instance.ShutdownAll(); } catch { }
             Cleanup();
             base.OnClosed(e);
         }

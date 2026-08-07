@@ -43,13 +43,11 @@ namespace KitLugia.WinPE.Pages
 
         private async void BtnMountIso_Click(object _, RoutedEventArgs e)
         {
-            var dlg = new Microsoft.Win32.OpenFileDialog { Filter = "ISO|*.iso" };
-            if (dlg.ShowDialog() == true)
-            {
-                AppendLog($"Montando ISO: {dlg.FileName}");
-                var (ok, msg, _) = await KitLugia.Core.IsoEditorManager.MountIso(dlg.FileName);
-                AppendLog(msg);
-            }
+            string iso = PickFile("ISO|*.iso", "Selecione a ISO para montar");
+            if (string.IsNullOrEmpty(iso)) return;
+            AppendLog($"Montando ISO: {iso}");
+            var (ok, msg, _) = await KitLugia.Core.IsoEditorManager.MountIso(iso);
+            AppendLog(msg);
         }
 
         private async void BtnDismountIso_Click(object _, RoutedEventArgs e)
@@ -65,9 +63,28 @@ namespace KitLugia.WinPE.Pages
 
         private async void BtnWimInfo_Click(object _, RoutedEventArgs e)
         {
-            var dlg = new Microsoft.Win32.OpenFileDialog { Filter = "WIM|*.wim|ESD|*.esd" };
-            if (dlg.ShowDialog() == true)
-                await RunCmd($"dism.exe", $"/Get-ImageInfo /ImageFile:\"{dlg.FileName}\"");
+            string wim = PickFile("WIM|*.wim|ESD|*.esd", "Selecione o arquivo WIM/ESD");
+            if (string.IsNullOrEmpty(wim)) return;
+            await RunCmd($"dism.exe", $"/Get-ImageInfo /ImageFile:\"{wim}\"");
+        }
+
+        /// <summary>
+        /// Seletor de arquivo com fallback: OpenFileDialog (COM) não existe no WinPE —
+        /// se falhar, pede o caminho digitado.
+        /// </summary>
+        private static string PickFile(string filter, string title)
+        {
+            try
+            {
+                var dlg = new Microsoft.Win32.OpenFileDialog { Filter = filter, Title = title };
+                if (dlg.ShowDialog() == true && !string.IsNullOrEmpty(dlg.FileName))
+                    return dlg.FileName;
+                return "";
+            }
+            catch
+            {
+                return InputDialog.Show(title, $"Digite o caminho do arquivo:", "") ?? "";
+            }
         }
 
         private async void BtnManageBcd_Click(object _, RoutedEventArgs e)

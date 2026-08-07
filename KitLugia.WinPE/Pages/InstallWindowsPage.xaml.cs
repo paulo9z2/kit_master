@@ -31,13 +31,21 @@ namespace KitLugia.WinPE.Pages
 
         private void BtnBrowseIso_Click(object _, RoutedEventArgs e)
         {
-            var dlg = new OpenFileDialog
+            try
             {
-                Filter = "Arquivos ISO|*.iso|Arquivos WIM|*.wim|Todos|*.*",
-                Title = "Selecione a ISO do Windows"
-            };
-            if (dlg.ShowDialog() == true)
-                IsoPathBox.Text = dlg.FileName;
+                var dlg = new OpenFileDialog
+                {
+                    Filter = "Arquivos ISO|*.iso|Arquivos WIM|*.wim|Todos|*.*",
+                    Title = "Selecione a ISO do Windows"
+                };
+                if (dlg.ShowDialog() == true)
+                    IsoPathBox.Text = dlg.FileName;
+            }
+            catch
+            {
+                // OpenFileDialog (COM) não existe no WinPE — o usuário digita o caminho
+                IsoPathBox.Focus();
+            }
         }
 
         private void BtnRefreshDrives_Click(object _, RoutedEventArgs e) => LoadDrives();

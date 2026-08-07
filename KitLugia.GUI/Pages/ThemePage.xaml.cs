@@ -96,6 +96,7 @@ namespace KitLugia.GUI.Pages
             res["AccentColor"] = new SolidColorBrush(Color.FromRgb(0x00, 0xD4, 0xAA));
             res["AccentPurple"] = new SolidColorBrush(Color.FromRgb(0x8B, 0x5C, 0xF6));
             res["AccentCoral"] = new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x6B));
+            res["AccentGlowColor"] = Color.FromRgb(0x00, 0xD4, 0xAA);
             res["CardBorder"] = new SolidColorBrush(Color.FromArgb(0x33, 0x8B, 0x5C, 0xF6));
             res["CardBackground"] = new SolidColorBrush(Color.FromArgb(0x18, 0xFF, 0xFF, 0xFF));
             res["SidebarBackground"] = new SolidColorBrush(Color.FromArgb(0x12, 0xFF, 0xFF, 0xFF));
@@ -119,6 +120,7 @@ namespace KitLugia.GUI.Pages
             res["AccentColor"] = new SolidColorBrush(Color.FromRgb(0xFF, 0xD7, 0x00));
             res["AccentPurple"] = new SolidColorBrush(Color.FromRgb(0x8B, 0x5C, 0xF6));
             res["AccentCoral"] = new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x6B));
+            res["AccentGlowColor"] = Color.FromRgb(0xFF, 0xD7, 0x00);
             res["CardBorder"] = new SolidColorBrush(Color.FromArgb(0x33, 0xFF, 0xD7, 0x00));
             res["CardBackground"] = new SolidColorBrush(Color.FromArgb(0x15, 0xFF, 0xFF, 0xFF));
             res["SidebarBackground"] = new SolidColorBrush(Color.FromArgb(0xE6, 0x12, 0x12, 0x12));
@@ -148,9 +150,14 @@ namespace KitLugia.GUI.Pages
             res["AccentColor"] = new SolidColorBrush(Color.FromRgb(0x4C, 0xC2, 0xFF));
             res["AccentPurple"] = new SolidColorBrush(Color.FromRgb(0x8B, 0x5C, 0xF6));
             res["AccentCoral"] = new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x6B));
+            res["AccentGlowColor"] = Color.FromRgb(0x4C, 0xC2, 0xFF);
             res["CardBorder"] = new SolidColorBrush(Color.FromArgb(0x33, 0x4C, 0xC2, 0xFF));
             res["CardBackground"] = new SolidColorBrush(Color.FromArgb(0x1E, 0xFF, 0xFF, 0xFF));
-            res["SidebarBackground"] = new SolidColorBrush(Color.FromArgb(0x14, 0xFF, 0xFF, 0xFF));
+            res["CardHover"] = new SolidColorBrush(Color.FromArgb(0x2E, 0xFF, 0xFF, 0xFF));
+            // Sidebar: painel escuro translúcido estilo navegação do Win11 (Mica Alt)
+            res["SidebarBackground"] = new SolidColorBrush(Color.FromArgb(0xCC, 0x1C, 0x1C, 0x1C));
+            // TextGold (seta › dos cards de navegação) vira o accent Fluent no Win11
+            res["TextGold"] = new SolidColorBrush(Color.FromRgb(0x8A, 0xD6, 0xFF));
             res["GoldGradient"] = CreateGradient(
                 (Color.FromRgb(0x4C, 0xC2, 0xFF), 0.0),
                 (Color.FromRgb(0x8B, 0x5C, 0xF6), 1.0));

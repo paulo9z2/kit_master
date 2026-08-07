@@ -56,32 +56,32 @@
                 </Border.Background>
                 <Grid>
                     <!-- Part&#xED;culas de fundo -->
-                    <Ellipse x:Name="Particle1" Width="10" Height="10" Fill="#FFD700" Opacity="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,100,0,0">
+                    <Ellipse x:Name="Particle1" Width="10" Height="10" Fill="{DynamicResource AccentColor}" Opacity="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,100,0,0">
                         <Ellipse.RenderTransform>
                             <TranslateTransform X="0" Y="0"/>
                         </Ellipse.RenderTransform>
                     </Ellipse>
-                    <Ellipse x:Name="Particle2" Width="15" Height="15" Fill="#FFD700" Opacity="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,100,0">
+                    <Ellipse x:Name="Particle2" Width="15" Height="15" Fill="{DynamicResource AccentColor}" Opacity="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,100,0">
                         <Ellipse.RenderTransform>
                             <TranslateTransform X="0" Y="0"/>
                         </Ellipse.RenderTransform>
                     </Ellipse>
-                    <Ellipse x:Name="Particle3" Width="8" Height="8" Fill="#FFD700" Opacity="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="150,0,0,100">
+                    <Ellipse x:Name="Particle3" Width="8" Height="8" Fill="{DynamicResource AccentColor}" Opacity="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="150,0,0,100">
                         <Ellipse.RenderTransform>
                             <TranslateTransform X="0" Y="0"/>
                         </Ellipse.RenderTransform>
                     </Ellipse>
-                    <Ellipse x:Name="Particle4" Width="12" Height="12" Fill="#FFD700" Opacity="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,120,120">
+                    <Ellipse x:Name="Particle4" Width="12" Height="12" Fill="{DynamicResource AccentColor}" Opacity="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,120,120">
                         <Ellipse.RenderTransform>
                             <TranslateTransform X="0" Y="0"/>
                         </Ellipse.RenderTransform>
                     </Ellipse>
-                    <Ellipse x:Name="Particle5" Width="6" Height="6" Fill="#FFD700" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,80,0,0">
+                    <Ellipse x:Name="Particle5" Width="6" Height="6" Fill="{DynamicResource AccentColor}" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,80,0,0">
                         <Ellipse.RenderTransform>
                             <TranslateTransform X="0" Y="0"/>
                         </Ellipse.RenderTransform>
                     </Ellipse>
-                    <Ellipse x:Name="Particle6" Width="10" Height="10" Fill="#FFD700" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,80">
+                    <Ellipse x:Name="Particle6" Width="10" Height="10" Fill="{DynamicResource AccentColor}" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,80">
                         <Ellipse.RenderTransform>
                             <TranslateTransform X="0" Y="0"/>
                         </Ellipse.RenderTransform>
@@ -102,7 +102,7 @@
                                    HorizontalAlignment="Center"
                                    TextAlignment="Center">
                             <TextBlock.Effect>
-                                <DropShadowEffect x:Name="SplashGlow" Color="#FFD700" BlurRadius="30" ShadowDepth="0" Opacity="0.6"/>
+                                <DropShadowEffect x:Name="SplashGlow" Color="{DynamicResource AccentGlowColor}" BlurRadius="30" ShadowDepth="0" Opacity="0.6"/>
                             </TextBlock.Effect>
                         </TextBlock>
                         <TextBlock x:Name="SplashSubtext"
@@ -551,7 +551,7 @@
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="KIT LUGIA" FontSize="18" FontWeight="Bold" Margin="5,0,0,5" Foreground="{DynamicResource AccentColor}">
                                 <TextBlock.Effect>
-                                    <DropShadowEffect Color="#FFD700" BlurRadius="12" ShadowDepth="0" Opacity="0.5"/>
+                                    <DropShadowEffect Color="{DynamicResource AccentGlowColor}" BlurRadius="12" ShadowDepth="0" Opacity="0.5"/>
                                 </TextBlock.Effect>
                             </TextBlock>
                             <TextBlock Text="U L T I M A T E   P E R F O R M A N C E" FontSize="10" Margin="5,0,0,20" Foreground="#808080" FontWeight="SemiBold"/>
@@ -727,6 +727,12 @@
                                      Foreground="#00D4AA"
                                      Click="NavButton_Click"
                                      ToolTip="Escolher tema visual: Moderno ou Dourado"/>
+                        <!-- BOTÃO PLUGINS -->
+                        <RadioButton x:Name="BtnPlugins" GroupName="Menu" Tag="&#x1F9E9;" Content="Plugins"
+                                     Style="{StaticResource NavButtonStyle}"
+                                     Foreground="#58A6FF"
+                                     Click="NavButton_Click"
+                                     ToolTip="Gerenciar plugins do KitLugia (DLLs .NET na pasta Plugins)"/>
                         <!-- Stutter removido da sidebar â€” acessÃ­vel via barra de busca -->
 
                     </StackPanel>

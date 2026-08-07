@@ -235,7 +235,22 @@ namespace KitLugia.WinPE.Pages
                         { UseShellExecute = true };
                         System.Diagnostics.Process.Start(psi);
                     }
-                    catch { StatusBar.Text = $"Não foi possível abrir: {fe.Name}"; }
+                    catch
+                    {
+                        // Sem Explorer/shell (WinPE): fallback via cmd.exe start
+                        try
+                        {
+                            var psi = new System.Diagnostics.ProcessStartInfo("cmd.exe",
+                                $"/c start \"\" \"{fe.FullPath}\"")
+                            { UseShellExecute = false, CreateNoWindow = true };
+                            System.Diagnostics.Process.Start(psi);
+                            StatusBar.Text = $"Abrindo: {fe.Name}";
+                        }
+                        catch
+                        {
+                            StatusBar.Text = $"Não foi possível abrir: {fe.Name}";
+                        }
+                    }
                 }
             }
         }

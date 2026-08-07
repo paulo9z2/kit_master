@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="KitLugia.GUI.Pages.PluginsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      Title="Plugins"
+      TextElement.FontFamily="Segoe UI Variable Display, Segoe UI, Segoe UI Emoji, Segoe UI Symbol, Arial">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="40,30,40,50" MaxWidth="900" HorizontalAlignment="Left">
+
+            <!-- TÍTULO -->
+            <TextBlock Text="Plugins &#x1F9E9;" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,10" Foreground="White"/>
+            <TextBlock Text="Extens&#xE3;o do KitLugia: DLLs .NET na pasta Plugins s&#xE3;o detectadas automaticamente."
+                       Foreground="#999" FontSize="13" Margin="0,0,0,25" TextWrapping="Wrap"/>
+
+            <!-- AÇÕES GLOBAIS -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <Button Content="&#x1F504; RECARREGAR PLUGINS" Click="BtnReload_Click"
+                        Width="180" Height="38" Cursor="Hand" FontWeight="Bold" Margin="0,0,10,0"/>
+                <Button Content="&#x1F4C2; ABRIR PASTA DE PLUGINS" Click="BtnOpenFolder_Click"
+                        Width="210" Height="38" Cursor="Hand" FontWeight="Bold" Margin="0,0,10,0"/>
+                <TextBlock x:Name="TxtPluginsDir" Foreground="#666" FontSize="12" VerticalAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <!-- INFO DE CARREGAMENTO -->
+            <TextBlock x:Name="TxtSummary" Foreground="#999" FontSize="13" Margin="0,0,0,15" TextWrapping="Wrap"/>
+
+            <!-- LISTA DE PLUGINS -->
+            <ItemsControl x:Name="PluginList">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="#15000000" BorderBrush="#333" BorderThickness="1"
+                                CornerRadius="10" Padding="18" Margin="0,0,0,12" Style="{StaticResource CardStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock x:Name="BadgeKind" Text="{Binding KindBadge}" FontWeight="Bold" FontSize="11"
+                                                   Foreground="{Binding KindColor}" Margin="0,2,10,0"/>
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16" Foreground="White"/>
+                                        <TextBlock Text="{Binding Version}" Foreground="{DynamicResource AccentColor}" FontSize="12"
+                                                   VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Author}" Foreground="#888" FontSize="12" Margin="0,4,0,0"/>
+                                    <TextBlock Text="{Binding Description}" Foreground="#AAA" FontSize="13" Margin="0,6,0,0"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding StatusText}" Foreground="{Binding StatusColor}" FontSize="12"
+                                               Margin="0,8,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Content="EXECUTAR" Click="BtnExecute_Click" Tag="{Binding}"
+                                            FontWeight="Bold" Cursor="Hand" Width="110" Height="34" Margin="0,0,8,0"/>
+                                    <Button Content="{Binding ToggleText}" Click="BtnToggle_Click" Tag="{Binding}"
+                                            FontWeight="Bold" Cursor="Hand" Width="110" Height="34"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- COMO CRIAR UM PLUGIN -->
+            <TextBlock Text="Como criar um plugin" FontSize="16" FontWeight="Bold" Foreground="White" Margin="0,30,0,10"/>
+            <Border Background="#1A1A1A" CornerRadius="8" Padding="20" BorderBrush="#333" BorderThickness="1" Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <TextBlock Foreground="#DDD" FontSize="14" TextWrapping="Wrap">
+                        <Run Text="1. "/><Run Text="Crie uma Class Library .NET (net10.0-windows) referenciando KitLugia.Core." Foreground="#DDD"/>
+                    </TextBlock>
+                    <TextBlock Foreground="#DDD" FontSize="14" TextWrapping="Wrap" Margin="0,8,0,0">
+                        <Run Text="2. "/><Run Text="Implemente a interface "/><Run Text="IKitLugiaPlugin" Foreground="{DynamicResource AccentColor}"/><Run Text=" (Nome, Versão, Autor, Descrição, Kind, Initialize, ExecuteAsync, Shutdown)."/>
+                    </TextBlock>
+                    <TextBlock Foreground="#DDD" FontSize="14" TextWrapping="Wrap" Margin="0,8,0,0">
+                        <Run Text="3. "/><Run Text="Compile e copie a DLL (e dependências) para a pasta "/><Run Text="Plugins" Foreground="{DynamicResource AccentColor}"/><Run Text=" ao lado do KitLugia.GUI.exe."/>
+                    </TextBlock>
+                    <TextBlock Foreground="#DDD" FontSize="14" TextWrapping="Wrap" Margin="0,8,0,0">
+                        <Run Text="4. "/><Run Text="Clique "/><Run Text="RECARREGAR PLUGINS" Foreground="{DynamicResource AccentColor}"/><Run Text=" nesta página."/>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

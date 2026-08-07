@@ -162,7 +162,19 @@ namespace KitLugia.WinPE.Pages
                 Clipboard.SetText(LogBox.Text);
                 AppendLog("Log copiado para a área de transferência.");
             }
-            catch { }
+            catch
+            {
+                string dumpPath = Path.Combine(Path.GetTempPath(), "kitlugia_log.txt");
+                try
+                {
+                    File.WriteAllText(dumpPath, LogBox.Text);
+                    AppendLog($"Clipboard indisponível neste ambiente. Log salvo em: {dumpPath}");
+                }
+                catch
+                {
+                    AppendLog("Clipboard indisponível e não foi possível salvar o log.");
+                }
+            }
         }
 
         private void AppendLog(string text)

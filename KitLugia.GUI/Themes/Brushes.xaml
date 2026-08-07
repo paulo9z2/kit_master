@@ -31,6 +31,9 @@
     <SolidColorBrush x:Key="TextDescription" Color="#A0A0A0"/>
     <SolidColorBrush x:Key="TextGold" Color="#FFD700"/>
 
+    <!-- Cor do glow/brilho (splash + logo) — cada tema define a sua (tipo Color, p/ DropShadowEffect) -->
+    <Color x:Key="AccentGlowColor">#FFD700</Color>
+
     <SolidColorBrush x:Key="SuccessBrush" Color="#4CAF50"/>
     <SolidColorBrush x:Key="ErrorBrush" Color="#C42B1C"/>
 
