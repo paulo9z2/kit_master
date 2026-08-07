@@ -2370,6 +2370,9 @@ namespace KitLugia.GUI
         // 📍 ANIMAÇÃO 21: Splash Screen de Intro (controlada por configuração) - MainWindow.xaml.cs linha ~1451-1650
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // ✨ Efeito de fundo DWM (Acrylic/Mica Win11, fallback Acrylic Win10) + cantos arredondados
+            WindowEffects.ApplyBackdrop(this);
+
             if (StartMinimized)
             {
                 // Tray mode: skip intro animation, finish init immediately

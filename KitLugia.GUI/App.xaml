@@ -1,11 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Application x:Class="KitLugia.GUI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.modernwpf.com/2019">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!-- ModernWPF: Fluent theme resources (Light/Dark/HighContrast).
+                     IMPORTANTE — precedência do WPF: em merged dictionaries a PRIMEIRA
+                     ocorrência da chave vence. Ordem correta:
+                     1) ThemeResources (brushes de tema que os controles ModernWPF usam)
+                     2) Generic.xaml (estilos Gold do KitLugia — vencem nos controles stock,
+                        preservando o tema Gold atual)
+                     3) FluentControlsResources (fornece estilos/controles modernos APENAS
+                        para tipos que o kit não define: InfoBar, NumberBox, NavigationView,
+                        etc.) — staged migration, sem regressão visual. -->
+                <ui:ThemeResources />
                 <ResourceDictionary Source="Themes/Generic.xaml"/>
+                <ui:FluentControlsResources />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

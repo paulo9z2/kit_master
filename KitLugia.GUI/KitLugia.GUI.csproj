@@ -86,6 +86,11 @@
 		<ProjectReference Include="..\KitLugia.Core\KitLugia.Core.csproj" />
 	</ItemGroup>
 
+	<!-- ModernWPF (Fluent styles + modern controls for WPF) -->
+	<ItemGroup>
+		<PackageReference Include="ModernWpfUI" Version="1.0.0-preview.1" />
+	</ItemGroup>
+
   <!-- Rust native DLL -->
   <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\rust_native\target\release\rust_native.dll')">
     <Content Include="..\rust_native\target\release\rust_native.dll">

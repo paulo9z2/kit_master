@@ -38,6 +38,13 @@ namespace KitLugia.GUI.Pages
             Logger.Log("🎨 Tema aplicado e salvo: Original Dourado");
         }
 
+        private void BtnThemeWin11_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ApplyWin11Theme();
+            SaveTheme("win11");
+            Logger.Log("🎨 Tema aplicado e salvo: Windows 11 Fluent");
+        }
+
         public static void ApplySavedTheme()
         {
             try
@@ -51,6 +58,8 @@ namespace KitLugia.GUI.Pages
 
                 if (theme == "gold")
                     ApplyGoldTheme();
+                else if (theme == "win11")
+                    ApplyWin11Theme();
                 else
                     ApplyModernTheme();
             }
@@ -78,10 +87,11 @@ namespace KitLugia.GUI.Pages
         {
             var res = Application.Current.Resources;
 
+            // Fundo semi-transparente (~75% alpha) para o backdrop DWM (Mica/Acrylic) aparecer
             res["WindowBackground"] = CreateGradient(
-                (Color.FromRgb(0x0F, 0x0F, 0x23), 0.0),
-                (Color.FromRgb(0x18, 0x18, 0x25), 0.4),
-                (Color.FromRgb(0x1A, 0x0A, 0x2A), 1.0));
+                (Color.FromArgb(0xC0, 0x0F, 0x0F, 0x23), 0.0),
+                (Color.FromArgb(0xC0, 0x18, 0x18, 0x25), 0.4),
+                (Color.FromArgb(0xC0, 0x1A, 0x0A, 0x2A), 1.0));
 
             res["AccentColor"] = new SolidColorBrush(Color.FromRgb(0x00, 0xD4, 0xAA));
             res["AccentPurple"] = new SolidColorBrush(Color.FromRgb(0x8B, 0x5C, 0xF6));
@@ -100,10 +110,11 @@ namespace KitLugia.GUI.Pages
         {
             var res = Application.Current.Resources;
 
+            // Fundo semi-transparente (~75% alpha) para o backdrop DWM (Mica/Acrylic) aparecer
             res["WindowBackground"] = CreateGradient(
-                (Color.FromRgb(0x1A, 0x15, 0x05), 0.0),
-                (Color.FromRgb(0x0A, 0x0A, 0x0A), 0.3),
-                (Color.FromRgb(0x05, 0x05, 0x05), 1.0));
+                (Color.FromArgb(0xC0, 0x1A, 0x15, 0x05), 0.0),
+                (Color.FromArgb(0xC0, 0x0A, 0x0A, 0x0A), 0.3),
+                (Color.FromArgb(0xC0, 0x05, 0x05, 0x05), 1.0));
 
             res["AccentColor"] = new SolidColorBrush(Color.FromRgb(0xFF, 0xD7, 0x00));
             res["AccentPurple"] = new SolidColorBrush(Color.FromRgb(0x8B, 0x5C, 0xF6));
@@ -114,6 +125,35 @@ namespace KitLugia.GUI.Pages
             res["GoldGradient"] = CreateGradient(
                 (Color.FromRgb(0xFF, 0xD7, 0x00), 0.0),
                 (Color.FromRgb(0xFF, 0xA5, 0x00), 1.0));
+
+            RefreshWindow();
+        }
+
+        /// <summary>
+        /// Tema Windows 11 Fluent — MODO ESCURO: fundo Mica escuro translúcido,
+        /// accent azul Fluent (#4CC2FF) e cards com estilo nativo Win11.
+        /// Combina com o backdrop DWM Mica aplicado em WindowEffects.ApplyBackdrop.
+        /// </summary>
+        public static void ApplyWin11Theme()
+        {
+            var res = Application.Current.Resources;
+
+            // Fundo Mica escuro — alpha moderado (~78%) para o blur do wallpaper aparecer
+            res["WindowBackground"] = CreateGradient(
+                (Color.FromArgb(0xC7, 0x20, 0x20, 0x20), 0.0),
+                (Color.FromArgb(0xC7, 0x1C, 0x1C, 0x1C), 0.5),
+                (Color.FromArgb(0xC7, 0x17, 0x17, 0x17), 1.0));
+
+            // Accent Fluent: azul Windows 11 (default claro de destaque)
+            res["AccentColor"] = new SolidColorBrush(Color.FromRgb(0x4C, 0xC2, 0xFF));
+            res["AccentPurple"] = new SolidColorBrush(Color.FromRgb(0x8B, 0x5C, 0xF6));
+            res["AccentCoral"] = new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x6B));
+            res["CardBorder"] = new SolidColorBrush(Color.FromArgb(0x33, 0x4C, 0xC2, 0xFF));
+            res["CardBackground"] = new SolidColorBrush(Color.FromArgb(0x1E, 0xFF, 0xFF, 0xFF));
+            res["SidebarBackground"] = new SolidColorBrush(Color.FromArgb(0x14, 0xFF, 0xFF, 0xFF));
+            res["GoldGradient"] = CreateGradient(
+                (Color.FromRgb(0x4C, 0xC2, 0xFF), 0.0),
+                (Color.FromRgb(0x8B, 0x5C, 0xF6), 1.0));
 
             RefreshWindow();
         }
